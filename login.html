@@ -22,7 +22,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-<!-- Mobile Gradient Header (ohne Dynamic Island) -->
+<!-- Mobile Gradient Header -->
 <div class="mobile-header" aria-hidden="true">
   <div class="mobile-header__bg"></div>
 
@@ -32,11 +32,27 @@
   </svg>
 </div>
 
+
 <main class="auth-wrap">
+  <!-- Untere linke Deko (nur mobil) -->
+<div class="mobile-deco" aria-hidden="true">
+  <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+    <defs>
+      <!-- gleicher Verlauf wie oben -->
+      <linearGradient id="mobile-deco-grad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%"  stop-color="#f08db7"/>
+        <stop offset="100%" stop-color="#6b5bff"/>
+      </linearGradient>
+    </defs>
+    <!-- weiche „Blob“-Fläche unten links -->
+    <path d="M0,300 L0,60 C36,88 84,120 94,164 C112,232 204,242 260,300 Z"
+          fill="url(#mobile-deco-grad)"/>
+  </svg>
+</div>
   <div class="auth-inner">
-    <div class="hero">
+<div class="hero">
   <h1 class="hero-title">Hallo</h1>
-  <p class="hero-subtitle">Melde dich in deinem Konto an</p>
+  <p class="hero-subtitle">Melde dich mit deinem Konto an</p>
 </div>
 
 <!-- LOGIN VIEW (neu gestylt) -->
@@ -91,7 +107,13 @@
         <span>Passwort</span>
         <input id="reg-password" type="password" minlength="6" required autocomplete="new-password" />
       </label>
-      <button class="btn primary" type="submit">Konto erstellen</button>
+      <button class="btn primary" type="submit">
+        <span>Registrieren</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </button>
+
 
       <div class="inline-links">
         <span class="muted">Schon ein Konto?</span>
@@ -100,17 +122,29 @@
 
       <p id="reg-msg" class="msg" role="alert" aria-live="polite"></p>
     </form>
-
-    <footer class="foot">
-      <a href="index.html">Zur Startseite</a>
-    </footer>
   </div>
 </main>
+
+<!-- Theme Switcher -->
+<div class="theme-switcher" aria-label="Darstellung umschalten">
+  <button id="btn-light" class="theme-btn" title="Helles Theme" aria-pressed="false">
+    <!-- Sonne -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm0 4a1 1 0 0 1-1-1v-1h2v1a1 1 0 0 1-1 1Zm0-20a1 1 0 0 1 1-1v1h-2V2a1 1 0 0 1 1-1Zm10 9h-1v2h1a1 1 0 1 0 0-2ZM3 11H2a1 1 0 1 0 0 2h1v-2Zm15.95 7.536-.707-.707-1.414 1.414.707.707a1 1 0 0 0 1.414-1.414ZM6.172 4.464l-.707-.707A1 1 0 0 0 4.05 5.17l.707.707L6.172 4.464Zm12.122.707.707-.707A1 1 0 1 0 17.586 3.05l-.707.707 1.414 1.414ZM5.464 17.586l-1.414-1.414-.707.707A1 1 0 1 0 5.17 19l.707-.707Z"/>
+    </svg>
+  </button>
+
+  <button id="btn-dark" class="theme-btn" title="Dunkles Theme" aria-pressed="false">
+    <!-- Mond -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 1 0 9.79 9.79Z"/>
+    </svg>
+  </button>
+</div>
 
   <script src="login.js"></script>
 </body>
 </html>
-
 
 
 
