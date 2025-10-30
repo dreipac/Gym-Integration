@@ -10,10 +10,14 @@ html,body{height:100%; background:#ffffff;}
 body{
   padding-top: 0;
   margin:0;
-  background:#ffffff;            /* Vollflächig WEISS */
+  /* 1. Hintergrund-Layer: Verlauf nur oben (inkl. Safe-Area) */
+  background:
+    linear-gradient(135deg, #f08db7 0%, #6b5bff 100%) 0 0 / 100% calc(220px + env(safe-area-inset-top)) no-repeat,
+    #ffffff; /* 2. Layer: restliche Seite bleibt weiß */
   color:var(--txt);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
 }
+
 
 /* Wrapper mittig, ohne "Card"/Fenster-Look */
 .auth-wrap{
@@ -208,6 +212,7 @@ body{
      padding-top: calc(170px + env(safe-area-inset-top));
   }
 }
+
 
 
 
