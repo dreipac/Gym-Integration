@@ -8,38 +8,11 @@
 *{box-sizing:border-box}
 html,body{height:100%; background:#ffffff;}
 body{
-  padding-top: env(safe-area-inset-top);
+  padding-top: 0;
   margin:0;
   background:#ffffff;            /* Vollflächig WEISS */
   color:var(--txt);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-}
-
-@supports (padding: env(safe-area-inset-top)) {
-  .ios-top-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: env(safe-area-inset-top);
-    background: #ffffff;
-    z-index: 9999;
-  }
-}
-
-
-@supports (padding: max(0px)) {
-  body::before {
-    content: "";
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: env(safe-area-inset-top);
-    background: #ffffff;
-    pointer-events: none;
-    z-index: 9999;
-  }
 }
 
 /* Wrapper mittig, ohne "Card"/Fenster-Look */
@@ -192,54 +165,49 @@ body{
   }
 }
 
-/* ===== Deko-Punkte oben rechts ===== */
-.decor-dots {
+
+/* ========== Mobile Gradient Header (unter der Dynamic Island / Notch) ========== */
+.mobile-header{
   position: fixed;
-  top: 0;
-  right: 0;
-  width: 200px;
-  height: 160px;
+  top: 0; left: 0; right: 0;
+  /* Höhe inkl. Safe-Area, damit der Verlauf bis UNTER die Notch reicht */
+  height: calc(160px + env(safe-area-inset-top));
+  z-index: 1;
+  overflow: hidden;
   pointer-events: none;
-  z-index: 0;
-  overflow: visible;
 }
 
-/* Grundstil aller Punkte */
-.decor-dots .dot {
+
+.mobile-header__bg{
   position: absolute;
-  border-radius: 50%;
+  /* Hintergrund beginnt oberhalb um die Safe-Area, füllt bis unten */
+  top: calc(-1 * env(safe-area-inset-top));
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: linear-gradient(135deg, #f08db7 0%, #6b5bff 100%);
-  opacity: 0.6;
-  filter: blur(1px);
 }
 
-/* verschiedene Größen / Positionen */
-.dot1 {
-  width: 60px; height: 60px;
-  top: 10px; right: 20px;
-  opacity: 0.5;
-}
-.dot2 {
-  width: 35px; height: 35px;
-  top: 50px; right: 80px;
-  opacity: 0.7;
-}
-.dot3 {
-  width: 20px; height: 20px;
-  top: 90px; right: 30px;
-  opacity: 0.8;
-}
-.dot4 {
-  width: 10px; height: 10px;
-  top: 30px; right: 130px;
-  opacity: 0.5;
+/* Welle, die nach unten in das Weiß übergeht */
+.mobile-header__wave{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%; height: 100px;
+  display: block;
 }
 
-/* optional: bei größeren Screens ausblenden */
-@media (min-width: 641px) {
-  .decor-dots { display: none; }
+/* Nur auf Mobilgeräten anzeigen */
+@media (min-width: 641px){
+  .mobile-header{ display: none; }
 }
 
+/* Abstand schaffen, damit nichts überlappt */
+@media (max-width: 640px){
+  .auth-wrap{
+     padding-top: calc(170px + env(safe-area-inset-top));
+  }
+}
 
 
 
