@@ -1,8 +1,8 @@
 {
   "name": "GymPlan",
   "short_name": "GymPlan",
-  "start_url": "/Gym/index.html",
-  "scope": "/Gym/",
+  "start_url": "/Gym-Integration/index.html",
+  "scope": "/Gym-Integration/",
   "display": "standalone",
   "background_color": "#0b1117",
   "theme_color": "#0e3264",
