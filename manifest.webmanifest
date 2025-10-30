@@ -3,7 +3,7 @@
   "short_name": "GymPlan",
   "start_url": "index.html?v=4",
   "scope": "/Gym-Integration/",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "icons": [
@@ -11,6 +11,7 @@
     { "src": "icons/logo-512.png", "sizes": "512x512", "type": "image/png" }
   ]
 }
+
 
 
 
