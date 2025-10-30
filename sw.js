@@ -15,14 +15,27 @@ const ASSETS = [
 // Install: App-Shell cachen
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)));
+  self.skipWaiting();
 });
 
-// Activate: alte Caches löschen
 self.addEventListener("activate", (e) => {
+  console.log("[Service Worker] Activate");
+
   e.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
-    )
+    (async () => {
+      // Alle Cache Keys holen
+      const keys = await caches.keys();
+
+      // Alte Versionen löschen
+      await Promise.all(
+        keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))
+      );
+
+      console.log("[Service Worker] Alte Caches gelöscht");
+
+      // Übernimmt sofort alle Clients (Tabs/PWAs)
+      await self.clients.claim();
+    })()
   );
 });
 
@@ -41,18 +54,6 @@ self.addEventListener("fetch", (e) => {
   e.respondWith(
     caches.match(req).then((cached) => cached || fetch(req))
   );
-});
-
-self.addEventListener("install", (e) => {
-  self.skipWaiting();
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
-});
-self.addEventListener("activate", (e) => {
-  e.waitUntil((async () => {
-    const keys = await caches.keys();
-    await Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)));
-    await self.clients.claim();
-  })());
 });
 
 
