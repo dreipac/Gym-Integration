@@ -7,11 +7,18 @@
 }
 *{box-sizing:border-box}
 /* Root-Element ist die Quelle für den Statusbar-Hintergrund */
-html, body {
+html{
   height: 100%;
+  background:#ffffff;
+}
+
+/* Body nicht übermalen lassen */
+body{
+  min-height: 100%;
   margin: 0;
-  padding: 0;
-  background: #fff;
+  background: transparent; /* wichtig! */
+  color: var(--txt);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
 }
 
 
@@ -167,23 +174,14 @@ html, body {
 
 
 /* ========== Mobile Gradient Header (unter der Dynamic Island / Notch) ========== */
-.mobile-header {
+.mobile-header{
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-
-  /* Höhe + Safe Area, damit es unter die Dynamic Island reicht */
-  height: calc(180px + env(safe-area-inset-top));
-
+  top: 0; left: 0; right: 0;
+  /* Höhe inkl. Safe-Area, damit der Verlauf bis UNTER die Notch reicht */
+  height: calc(160px + env(safe-area-inset-top));
   z-index: 1;
   overflow: hidden;
   pointer-events: none;
-
-  /* WICHTIG: Hintergrund wird direkt auf das Element gezogen */
-  background: linear-gradient(135deg, #f08db7 0%, #6b5bff 100%);
-  /* Damit der Verlauf in die Safe-Area hineinzieht */
-  padding-top: env(safe-area-inset-top);
 }
 
 
@@ -200,12 +198,11 @@ html, body {
 
 
 /* Welle, die nach unten in das Weiß übergeht */
-.mobile-header__wave {
+.mobile-header__wave{
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 100%;
-  height: 100px;
+  width: 100%; height: 100px;
   display: block;
 }
 
@@ -220,8 +217,6 @@ html, body {
      padding-top: calc(170px + env(safe-area-inset-top));
   }
 }
-
-
 
 
 
