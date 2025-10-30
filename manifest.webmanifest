@@ -1,7 +1,7 @@
 {
   "name": "GymPlan",
   "short_name": "GymPlan",
-  "start_url": "/Gym-Integration/index.html",
+  "start_url": "index.html?v=4",
   "scope": "/Gym-Integration/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -11,5 +11,6 @@
     { "src": "icons/logo-512.png", "sizes": "512x512", "type": "image/png" }
   ]
 }
+
 
 
