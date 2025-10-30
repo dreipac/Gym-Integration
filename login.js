@@ -63,7 +63,7 @@ formRegister.addEventListener("submit", async (e) => {
     password,
     options: {
       // Nach E-Mail-Bestätigung hierhin zurück
-      emailRedirectTo: "https://dreipac.github.io/Gym/index.html"
+      emailRedirectTo: "https://dreipac.github.io/Gym-Integration/index.html"
       // Für lokalen Test ggf.:
       // emailRedirectTo: "http://localhost:5500/index.html"
     }
@@ -84,4 +84,5 @@ formRegister.addEventListener("submit", async (e) => {
   const { data: { session } } = await supabase.auth.getSession();
   if (session) location.href = "index.html";
 });
+
 
