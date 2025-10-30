@@ -2,8 +2,9 @@
   --txt:#0b1117; --muted:#64748b;
   --brd:#e2e8f0; --panel:#ffffff;
   --accent1:#0ea5e9; --accent2:#1e40af;
+  --bg-deep: #ffffff; 
+  --bg-deep-2: #ffffff;
 }
-
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
@@ -162,3 +163,4 @@ body{
     justify-content: center;
   }
 }
+
