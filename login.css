@@ -16,10 +16,16 @@ body{
 }
 
 @supports (padding: max(0px)) {
-  body::before{
-    content:""; position:fixed; left:0; right:0; top:0;
+  body::before {
+    content: "";
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
     height: env(safe-area-inset-top);
-    background:#ffffff; pointer-events:none; z-index:9999;
+    background: #ffffff;
+    pointer-events: none;
+    z-index: 9999;
   }
 }
 
@@ -172,6 +178,7 @@ body{
     justify-content: center;
   }
 }
+
 
 
 
