@@ -193,48 +193,44 @@ body{
 }
 
 
-/* ========== Mobile Gradient Header (ohne Dynamic Island) ========== */
-.mobile-header{
+/* ===== App-Bar mit Curve (rosa → violett) ===== */
+.appbar {
   position: fixed;
   top: 0; left: 0; right: 0;
-  height: 160px;
+  height: 140px;                 /* Höhe des Balkens */
   z-index: 1;
   overflow: hidden;
   pointer-events: none;
-  padding-top: env(safe-area-inset-top, 0px);
 }
 
-.mobile-header__bg{
+/* Hintergrundfarbe / Verlauf */
+.appbar__bg {
   position: absolute; inset: 0;
   background: linear-gradient(135deg, #f08db7 0%, #6b5bff 100%);
+  padding-top: env(safe-area-inset-top); /* berücksichtigt iOS-Statusleiste */
 }
 
-/* Welle, die nach unten in das Weiß übergeht */
-.mobile-header__wave{
+/* Sanfte Unterkante */
+.appbar__curve {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 100%; height: 100px;
+  width: 100%; height: 80px;
   display: block;
 }
 
-/* Nur auf Mobilgeräten anzeigen */
+/* Nur auf Mobil anzeigen */
 @media (min-width: 641px){
-  .mobile-header{ display: none; }
+  .appbar { display: none; }
 }
 
-/* Abstand schaffen, damit nichts überlappt */
+/* Abstand nach oben für den Inhalt */
 @media (max-width: 640px){
-  .auth-wrap{
-    padding-top: 170px; /* Platz für Header */
+  .auth-wrap {
+    padding-top: 160px; /* Platz unter der App-Bar */
   }
 }
 
-@supports(padding: env(safe-area-inset-top)) {
-  .mobile-header__bg {
-    padding-top: env(safe-area-inset-top);
-  }
-}
 
 
 
