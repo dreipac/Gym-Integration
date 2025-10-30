@@ -6,14 +6,22 @@
   --bg-deep-2: #ffffff;
 }
 *{box-sizing:border-box}
-html,body{height:100%; background:#ffffff;}
-body{
-  padding-top: 0;
-  margin:0;
-  /* 1. Hintergrund-Layer: Verlauf nur oben (inkl. Safe-Area) */
+/* Root-Element ist die Quelle für den Statusbar-Hintergrund */
+html{
+  height: 100%;
   background:
-    linear-gradient(135deg, #f08db7 0%, #6b5bff 100%) 0 0 / 100% calc(220px + env(safe-area-inset-top));
-  color:var(--txt);
+    /* oberer Bereich inkl. Safe Area als Verlauf */
+    linear-gradient(135deg, #f08db7 0%, #6b5bff 100%) 0 0 / 100% calc(240px + env(safe-area-inset-top)) no-repeat,
+    /* Rest weiß */
+    #ffffff;
+}
+
+/* Body nicht übermalen lassen */
+body{
+  min-height: 100%;
+  margin: 0;
+  background: transparent; /* wichtig! */
+  color: var(--txt);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
 }
 
@@ -211,6 +219,7 @@ body{
      padding-top: calc(170px + env(safe-area-inset-top));
   }
 }
+
 
 
 
