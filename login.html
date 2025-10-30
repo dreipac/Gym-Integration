@@ -22,7 +22,16 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-<div class="ios-top-bar"></div>
+<!-- Mobile Gradient Header (ohne Dynamic Island) -->
+<div class="mobile-header" aria-hidden="true">
+  <div class="mobile-header__bg"></div>
+
+  <!-- Obere Welle -->
+  <svg class="mobile-header__wave" viewBox="0 0 375 100" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,100 C80,72 180,112 300,84 C340,76 375,78 375,78 L375,100 L0,100 Z" fill="#ffffff"/>
+  </svg>
+</div>
+
 <main class="auth-wrap">
   <div class="auth-inner">
     <div class="hero">
