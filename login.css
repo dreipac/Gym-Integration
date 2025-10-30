@@ -9,14 +9,14 @@
 /* Root-Element ist die Quelle für den Statusbar-Hintergrund */
 html{
   height: 100%;
-  background:#ffffff;
+  background: linear-gradient(135deg, #f08db7 0%, #6b5bff 100%);
 }
 
 /* Body nicht übermalen lassen */
 body{
   min-height: 100%;
   margin: 0;
-  background: transparent; /* wichtig! */
+  background: linear-gradient(135deg, #f08db7 0%, #6b5bff 100%);
   color: var(--txt);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
 }
@@ -177,6 +177,7 @@ body{
 .mobile-header{
   position: fixed;
   top: 0; left: 0; right: 0;
+  background: linear-gradient(135deg, #f08db7 0%, #6b5bff 100%);
   /* Höhe inkl. Safe-Area, damit der Verlauf bis UNTER die Notch reicht */
   height: calc(160px + env(safe-area-inset-top));
   z-index: 1;
@@ -217,6 +218,7 @@ body{
      padding-top: calc(170px + env(safe-area-inset-top));
   }
 }
+
 
 
 
