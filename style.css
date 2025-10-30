@@ -1,0 +1,2118 @@
+:root{
+  /* Farb-Theme – dunkelblau + helle blaue Lichtquellen */
+  --txt: #f7f7f8;
+  --muted: #cdd2d8;
+
+  --bg-deep: #000000;
+  --bg-deep-2: #0a0a0a;     /* zweite Nuance für Vignette */
+  --blue-core: #3da3ff;      /* helleres Blau (Kern der Lichtquelle) */
+  --blue-halo: #6ec0ff;      /* Halo / äußerer Schein */
+
+  --glass-bg: rgba(255,255,255,.08);
+  --glass-brd: rgba(255,255,255,.22);
+  --brand: #6ee7b7;
+  --brand-2: #22d3ee;
+  --danger: #ef4444;
+  --shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+
+
+
+/* iOS Safe-Area (Home-Indicator) */
+:root{
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top:    env(safe-area-inset-top, 0px);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  color: var(--txt);
+
+  /* Dunkelblauer, weich verschwommener Hintergrund */
+  background:
+    radial-gradient(1200px 800px at 50% 100%,
+      color-mix(in oklab, var(--bg-deep-2) 40%, transparent) 0%,
+      transparent 70%),
+    radial-gradient(1200px 800px at 50% 0%,
+      color-mix(in oklab, var(--bg-deep-2) 35%, transparent) 0%,
+      transparent 70%),
+    linear-gradient(180deg, var(--bg-deep), var(--bg-deep-2));
+
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  /* leichte Sättigung für „glow“ */
+  backdrop-filter: saturate(120%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* Weiche, blaue Lichtquellen: oben-links & unten-rechts, pulsierend und geblurrt */
+#app::before,
+#app::after{
+  content:"";
+  position:fixed;
+  inset:auto;
+  pointer-events:none;
+  z-index:-1;
+  filter: blur(80px);
+  opacity:.55;
+  transform: translateZ(0);
+}
+
+/* Oben links – helleres Blau als „Lichtquelle“ */
+#app::before{
+  left:-12vw; top:-12vh; width:56vw; height:56vh;
+  background:
+    radial-gradient(closest-side, color-mix(in oklab, var(--blue-core) 55%, transparent) 0%, transparent 80%),
+    radial-gradient(closest-side, color-mix(in oklab, var(--blue-halo) 45%, transparent) 0%, transparent 85%);
+  animation: pulseGlow 10s ease-in-out infinite alternate;
+}
+
+/* Unten rechts – zweite Lichtquelle, etwas größer */
+#app::after{
+  right:-14vw; bottom:-14vh; width:64vw; height:64vh;
+  background:
+    radial-gradient(closest-side, color-mix(in oklab, var(--blue-core) 45%, transparent) 0%, transparent 80%),
+    radial-gradient(closest-side, color-mix(in oklab, var(--blue-halo) 40%, transparent) 0%, transparent 85%);
+  animation: pulseGlow 12s ease-in-out infinite alternate;
+}
+
+/* Leichtes Pulsieren (Größe + Opazität) */
+@keyframes pulseGlow{
+  0%   { transform: translateZ(0) scale(1);    opacity:.48; filter: blur(80px); }
+  100% { transform: translateZ(0) scale(1.06); opacity:.62; filter: blur(92px); }
+}
+
+/* Motion-Respect */
+@media (prefers-reduced-motion: reduce){
+  #app::before, #app::after{ animation: none }
+}
+
+
+
+/* Layout */
+.topbar{
+  position:sticky; top:0; z-index:10;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 18px;
+  background: rgba(0,0,0,.35);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  backdrop-filter: blur(10px);
+}
+.brand{display:flex; gap:10px; align-items:center}
+.logo{font-size:22px}
+.title{font-weight:800; letter-spacing:.3px}
+.nav{display:flex; gap:10px}
+.nav-link{
+  color:var(--txt); text-decoration:none; padding:8px 12px; border-radius:999px;
+  border:1px solid transparent;
+}
+.nav-link.active{border-color:rgba(255,255,255,.25); background:rgba(255,255,255,.06)}
+
+.view{padding:20px; min-height:calc(100dvh - 120px)}
+.section{max-width:1100px; margin:0 auto; display:grid; gap:20px}
+
+.footer{
+  padding:16px 20px; text-align:center; color:var(--muted);
+  background: rgba(0,0,0,.35); border-top:1px solid rgba(255,255,255,.08);
+}
+
+/* Cards / Glass */
+.glass{
+  background: color-mix(in oklab, var(--glass-bg) 100%, transparent);
+  border: 1px solid color-mix(in oklab, var(--glass-brd) 100%, transparent);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px) saturate(140%);
+  border-radius:10px;
+}
+
+.card{padding:18px}
+.card--big{padding:22px}
+.card-header h1{margin:0 0 6px 0}
+.subtle{color:var(--muted)}
+.muted{color:var(--muted); margin:2px 0 0}
+.today-plan .muted{
+  margin: 2px 0 0;     /* war effektiv 6px → jetzt 2px */
+}
+
+
+/* Today */
+.today-body{display:grid; gap:18px}
+.pill{
+  display:block;
+  margin-top:5px;
+  padding-top:10px;
+  font-weight:600;
+  font-size:1rem;
+  color: var(--txt);
+  background:none;
+  border-radius:0;
+}
+
+/* === Schwebende Pill: Icon + Text beim Ruhetag === */
+#today-plan-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Abstand zwischen Icon und Text */
+}
+
+#today-plan-pill .pill-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+
+
+.actions{display:flex; flex-wrap:wrap; gap:10px}
+.btn{
+  appearance:none; border:none; border-radius:14px; padding:12px 14px;
+  font-weight:600; cursor:pointer; transition: .2s transform ease, .2s opacity ease;
+}
+.btn:active{transform: translateY(1px)}
+/* Primärer Button – neues Design */
+.btn.primary {
+  background: linear-gradient(180deg, #3dd5f3 0%, #0ea5e9 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(14,165,233,.35);
+  transition: all 0.25s ease;
+}
+
+.btn.primary:hover {
+  background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+  box-shadow: 0 6px 16px rgba(14,165,233,.45);
+  transform: translateY(-1px);
+}
+
+.btn.primary:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(14,165,233,.25);
+}
+
+.btn.subtle{ text-decoration: none;  background: rgba(255,255,255,.08); color:var(--txt); border:1px solid rgba(255,255,255,.18)}
+.btn.ghost{text-decoration: none; background: transparent; color: var(--txt); border:1px dashed rgba(255,255,255,.3)}
+.btn.danger{border-color: rgba(239,68,68,.6); color:#1f1f1f}
+.btn.danger.ghost{background: transparent}
+
+/* Stats */
+.stats{
+  display:grid; grid-template-columns: repeat(3, 1fr); gap:12px;
+}
+.stat{
+  background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+  border-radius:14px; padding:12px; text-align:center;
+}
+.stat-num{font-size:1.6rem; font-weight:800}
+.stat-label{color:var(--muted); font-size:.9rem}
+
+.divider{
+  border:0; height:1px; background: rgba(255,255,255,.12); margin:8px 0;
+}
+
+.today-plan .divider{
+  margin: 4px 0;       /* war effektiv 8px → jetzt halbiert */
+}
+
+
+/* List */
+.list{list-style:none; margin:0; padding:0; display:grid; gap:10px}
+.list li{
+  display:flex; justify-content:space-between; align-items:center; gap:10px;
+  padding:10px 12px; border-radius:12px; background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12)
+}
+.badge{
+  padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.2);
+  background: rgba(255,255,255,.06); font-size:.9rem
+}
+
+/* Calendar */
+.calendar-head{
+  display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px
+}
+.icon-btn{
+  background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
+  border-radius:12px; padding:8px 12px; color:var(--txt); cursor:pointer
+}
+.calendar{display:grid; gap:8px}
+.cal-grid{
+  display:grid; grid-template-columns: repeat(7, 1fr); gap:8px;
+}
+.cal-weekdays{
+  display:grid; grid-template-columns: repeat(7, 1fr); gap:8px; color:var(--muted); font-weight:600; font-size:.9rem
+}
+.day{
+  aspect-ratio: 1/1; border-radius:14px; padding:8px; position:relative;
+  background: rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  display:flex; flex-direction:column; gap:6px; justify-content:space-between;
+  cursor:pointer;
+}
+.day.out{opacity:.35}
+.day:hover{outline:2px solid rgba(255,255,255,.2)}
+.day .num{font-weight:700}
+.day.today{border-color:rgba(110,231,183,.9); box-shadow: 0 0 0 2px rgba(110,231,183,.3) inset}
+
+/* Form */
+.edit-grid{display:grid; gap:14px}
+.field{display:grid; gap:6px}
+.field input,.field select{
+  width:100%; padding:12px 14px; border-radius:12px;
+  border:1px solid rgba(255,255,255,.2); background: rgba(0,0,0,.2); color:var(--txt)
+}
+.edit-actions{display:flex; flex-wrap:wrap; gap:10px}
+
+/* Templates */
+.tpl-grid{display:grid; gap:10px}
+.tpl-actions{display:flex; flex-wrap:wrap; gap:10px}
+
+/* Settings */
+.settings-grid{
+  display:grid; gap:16px;
+}
+.settings-block{
+  background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+  border-radius:14px; padding:14px;
+}
+.danger-block{border-color: rgba(239,68,68,.4)}
+
+/* Responsive */
+@media (min-width: 900px){
+  .section{grid-template-columns: 1.2fr .8fr}
+  .card--big{min-height: 360px}
+  .stats{grid-template-columns: repeat(3, 1fr)}
+}
+
+/* Konfigurieren */
+.cfg-grid{display:grid; gap:16px}
+.cfg-actions{display:flex; gap:8px; flex-wrap:wrap}
+.cfg-item-name{font-weight:600}
+.cfg-item-sub{color:var(--muted); font-size:.9rem}
+.cfg-list-btn{background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18); border-radius:10px; padding:6px 10px; cursor:pointer}
+
+/* ===== Stopwatch: als Abschnitt in Heute-Karte ===== */
+.stopwatch{
+  padding: 12px 0 0;     /* oben etwas Luft, unten bündig */
+  display: grid;
+  gap: 12px;
+  border: none;
+  background: transparent;
+  border-radius: 0;
+}
+
+/* Smoothes Schrumpfen der Stoppuhr-Karte ohne Layout-Jump */
+#sw{
+  overflow: hidden;            /* Inhalt beim Schrumpfen verstecken */
+  max-height: 1000px;          /* groß genug für ausgeklappt */
+  transition: max-height .18s ease;  /* sanfte Höhe-Transition */
+}
+
+.sw-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.sw-title{font-weight:700}
+.time-large{
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  font-size:2.6rem; font-weight:800; letter-spacing:.5px;
+}
+.sw-actions{display:flex; gap:10px; flex-wrap:wrap}
+
+.sw-meta{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.sw-meta .time-large{
+  font-size:1.4rem;
+  font-weight:700;
+}
+
+#sw.is-paused{ opacity: .9; }
+#sw.is-paused .time-large{ text-decoration: underline dotted rgba(255,255,255,.35); }
+/* ===== Stopwatch: Toggle & Kompaktmodus ===== */
+
+.sw-toggle:active{ transform: translateY(1px); }
+
+/* Kompaktansicht: nur Titel, Zeit & Status-Badge sichtbar */
+#sw.is-collapsed .sw-actions{ display:none; }
+#sw.is-collapsed #sw-hint{ display:none; }
+#sw.is-collapsed .sw-time-inline{ display:inline; }
+
+
+#sw:not(.is-collapsed) .sw-time-inline{ display:none; } /* Inline-Zeit ausblenden */
+#sw:not(.is-collapsed) .sw-body{ display:grid; gap:12px; } /* Body zeigen */
+#sw:not(.is-collapsed) #sw-plan-badge{ display:inline-block; } /* Plan-Badge im Header wie vorher */
+
+.sw-time-inline{
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  font-size:1.1rem;
+  font-weight:700;
+}
+
+/* optional, falls du das textarea konsistent zu inputs stylen willst */
+.field textarea{
+  width:100%; padding:12px 14px; border-radius:12px;
+  border:1px solid rgba(255,255,255,.2); background: rgba(0,0,0,.2); color:var(--txt);
+  resize: vertical;
+}
+
+/* === Geräte-Inputs: linke Farbleiste (ohne Label) === */
+.gear-item{
+  /* Lokale Standardfarbe, falls kein JS gesetzt hat */
+  --gear-color: rgba(255,255,255,.25);
+}
+
+.gear-input{
+  /* kompakter, da keine Label-Pille mehr */
+  padding-left: 16px;
+  border-left: 10px solid var(--gear-color); /* dicke Farblinie links */
+  transition: outline-color .15s ease, box-shadow .15s ease, border-left-color .15s ease;
+}
+
+.gear-input:focus{
+  outline: 2px solid color-mix(in oklab, var(--gear-color) 55%, transparent);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--gear-color) 25%, transparent);
+}
+
+/* === Kalender: farblich gefüllte Tage statt Text-Tag === */
+.day.has-training{
+  /* dezente Füllung (Mint ↔ Cyan), passt zum restlichen Theme */
+  background: linear-gradient(135deg, color-mix(in oklab, #6ee7b7 22%, transparent), color-mix(in oklab, #22d3ee 22%, transparent));
+  border-color: rgba(255,255,255,.28);
+}
+
+.day.has-training .num{
+  font-weight: 800;
+}
+
+.day.today.has-training{
+  /* Heute + Training etwas markanter */
+  border-color: rgba(110,231,183,.9);
+  box-shadow: 0 0 0 2px rgba(110,231,183,.35) inset;
+}
+
+/* === Geräte-Liste: Titel + Trennlinien === */
+#ke-geraete-list .gear-item{
+  padding: 10px 0 12px;
+  border-bottom: 1px solid rgba(255,255,255,.15);
+}
+#ke-geraete-list .gear-item:last-child{
+  border-bottom: none;
+}
+.gear-title{
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: .2px;
+  margin-bottom: 6px;
+  color: var(--txt);
+  opacity: .9;
+}
+
+/* ===== Mobile: feste Seite, Scroll NUR in den Boxen ===== */
+@media (max-width: 768px){
+html, body{
+  height: auto;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto; /* Seite darf scrollen */
+}
+
+  .view{
+    /* Höhe nur innerhalb des sichtbaren Bereichs (Header+Footer ~120px) */
+    min-height: 0;
+    height: calc(100dvh - 120px);
+    overflow: hidden; /* keine Seitenscrollbars */
+  }
+
+  /* Override: In Heute & Kalender darf die gesamte View scrollen */
+body.route-heute .view,
+body.route-kalender .view{
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.section{
+  grid-template-columns: 1fr; /* einspaltig */
+  height: auto;               /* ← NICHT auf 100% fixieren */
+  min-height: 100%;           /* darf mindestens View-Höhe erreichen */
+}
+
+/* Default: NICHT strecken – verhindert "leere" große Karte bei Ruhetag */
+body.route-heute .section{
+  grid-template-rows: auto auto auto;
+}
+
+  /* Die großen Karten werden zu flex-Containern,
+     der eigentliche Inhalt darin wird scrollfähig gemacht */
+  .card--big{
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    max-height: none;
+    min-height: 0; /* erlaubt dem inneren Scrollbereich, zu schrumpfen */
+  }
+
+/* Standard: Karte wächst nur nach Inhalt */
+body.route-heute .card--big{
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  min-height: 0;
+  max-height: none;
+}
+
+/* Füller NUR, wenn JS .card--fill setzt (Stoppuhr offen) */
+body.route-heute .card--big.card--fill{
+  flex: 1 1 auto;
+  max-height: calc(100dvh - 120px - (76px + var(--safe-bottom)));
+}
+
+
+
+body.route-heute .card--big .today-body{
+  /* nur scrollen, wenn die Karte ihre max-Höhe erreicht */
+  overflow: auto;
+  min-height: 0;
+  max-height: inherit;
+}
+  
+  /* Typische Inhaltscontainer in den großen Karten, die lang werden können */
+  .card--big .today-body,
+  .card--big .edit-grid,
+  .card--big .cfg-grid,
+  .card--big .settings-grid{
+    overflow: auto;   /* HIER wird gescrollt */
+    min-height: 0;    /* verhindert, dass sie unendlich wachsen */
+  }
+
+  /* Kleinere Blöcke sollen nicht eigenständig wachsen */
+  .settings-block{
+    flex: 0 0 auto;
+  }
+
+/* 👉 Tabs, in denen die gesamte View scrollen soll (Kalender & Heute) */
+body.route-kalender .view,
+body.route-heute .view{
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+/* Nur strecken, wenn die große Karte bewusst füllen soll (z. B. Stoppuhr offen) */
+body.route-heute .section:has(.card--big.card--fill){
+  grid-template-rows: auto 1fr auto;
+}
+
+/* Fallback für Browser ohne :has() – wird per JS-Klasse gesetzt (siehe app.js) */
+body.route-heute .section.section--fill{
+  grid-template-rows: auto 1fr auto;
+}
+}
+
+/* Konfig: leerer Zustand ohne Box */
+.cfg-empty{
+  color: var(--muted);
+  padding: 2px 0;
+}
+
+
+/* Sichtbarkeit & Layout mobil/desktop */
+@media (max-width: 768px){
+
+  /* Topbar wird zur Bottom-Bar */
+  .topbar{
+    position: fixed;
+    inset: auto 0 0 0; /* unten bündig, links+rechts 0 */
+    padding: 8px 12px max(6px, calc(6px + var(--safe-bottom)));
+    border-bottom: none;
+    z-index: 20;
+
+    /* iOS fix */
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+    /* Kleine „Luft“ unter den Tabs, damit Gesten nicht direkt an der Kante starten */
+  .nav{ padding-bottom: 6px; }
+
+  /* Unsichtbarer Safe-Area-Puffer in der Topbar – verhindert visuelles „Kleben“ am Rand */
+  .topbar::after{
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: var(--safe-bottom);
+    pointer-events: none;
+    background: transparent;
+  }
+
+
+  /* Brand (Logo+Titel) mobil ausblenden */
+  .brand{ display:none; }
+
+  /* Nav als Bottom-Tabs mit Icons */
+  .nav{
+    display:flex;
+    width:100%;
+    justify-content:space-around;
+    gap:0;
+  }
+  .nav-link{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    padding:10px 12px;
+    border-radius:12px;
+    min-width:64px;
+  }
+  .nav-link .icon{
+    font-size:20px;
+    line-height:1;
+  }
+  .nav-link .label{       /* Beschriftung mobil ausblenden */
+    position:absolute;
+    width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;
+  }
+
+  /* Platz für Bottom-Bar schaffen */
+   .view{
+    padding-bottom: calc(60px + var(--safe-bottom));  /* Platz für Nav + Home-Indicator */
+    height: calc(100dvh - 120px);
+    overflow: hidden;
+  }
+@media (max-width: 768px){
+  body.route-heute .view,
+  body.route-kalender .view,
+  body.route-konfigurieren .view,
+  body.route-einstellungen .view{
+    padding-bottom: calc(60px + var(--safe-bottom)); /* Nav-Höhe + Safe-Area */
+  }
+}
+
+
+  /* optional: Footer ausblenden, damit es unten nicht doppelt wird */
+  .footer{ display:none; }
+}
+@media (min-width: 769px){
+    .nav-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 12px;
+  }
+  .nav-link .icon{ font-size:16px; }
+  .nav-link .label{
+    position: static;
+    width:auto; height:auto; margin:0; overflow:visible; clip:auto; border:0;
+  }     
+}
+
+/* === Geräte-Eingaben: Zeilenlayout für Name + Gewicht === */
+.gear-row{
+  display: grid;
+  grid-template-columns: 1fr 130px;
+  gap: 8px;
+  align-items: center;
+}
+.weight-input{
+  text-align: right;
+}
+
+/* === Stoppuhr: Gewichte-Liste === */
+.sw-weights{
+  display: grid;
+  gap: 8px;
+}
+.weight-row{
+  display: grid;
+  grid-template-columns: 1fr 130px;
+  gap: 8px;
+  align-items: center;
+  background: rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+.weight-row .label{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.weight-row .sub{
+  color: var(--muted);
+  font-size:.9rem;
+}
+
+/* === Heute: Gewichtseingaben mit Unterstreichung === */
+.sw-weights .weight-input {
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,.3); /* grau wenn nicht im Fokus */
+  border-radius: 0;
+  background: transparent;
+  padding: 4px 2px;
+  color: var(--txt);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.sw-weights .weight-input:focus {
+  outline: none;
+  border-bottom: 1px;
+  border-bottom-color: var(--brand); /* Mint-Farbe bei Fokus */
+  box-shadow: 0 1px 0 0 var(--brand);
+}
+
+/* === Spotlight-Höcker für aktive Tabs (mobil & desktop) === */
+.nav { position: relative; }
+
+.nav-spot {
+  display: block;                            /* jetzt auch auf Desktop sichtbar */
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(calc(var(--spot-left, 0px) - var(--spot-width, 64px) / 2));
+  height: 40px;                              /* Desktop-Höhe */
+  width: var(--spot-width, 64px);
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(34,211,238,.35), rgba(110,231,183,.35));
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.25);
+  backdrop-filter: blur(10px) saturate(140%);
+  transition:
+    transform .45s cubic-bezier(.22,.9,.26,1),
+    width .35s ease,
+    height .35s ease;
+  z-index: 0;
+}
+
+.nav-spot::before{
+  content:"";
+  position:absolute;
+  left:10%;
+  right:10%;
+  top:-10px;                /* leichter "Bump" nach oben */
+  height:20px;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,.16), transparent 70%);
+  filter: blur(6px);
+  opacity:.7;
+  pointer-events:none;
+}
+
+/* Links über dem Höcker stapeln */
+.nav .nav-link { position: relative; z-index: 1; }
+
+/* Motion-Respect */
+@media (prefers-reduced-motion: reduce){
+  .nav-spot{ transition:none; }
+}
+
+/* Mobile: höherer Balken wie gehabt + keine aktive Tab-Hinterlegung */
+@media (max-width: 768px){
+  .nav-spot { height: 56px; }
+  .nav-link.active{
+    border-color: transparent;
+    background: transparent;
+  }
+}
+
+/* Desktop: gleiche „Schieb“-Optik – aktiver Tab transparent lassen */
+@media (min-width: 769px){
+  .nav-link.active{
+    border-color: transparent;
+    background: transparent;
+  }
+}
+
+
+/* === Route-Transition: Horizontaler Push-Slide (alle Breakpoints) === */
+.view{
+  will-change: transform;
+  transform: translate3d(0,0,0);
+  backface-visibility: hidden;
+  contain: paint;
+}
+
+/* EXIT: aktueller Inhalt fährt raus */
+.view.route-exit.dir-forward        { transform: translate3d(0,0,0); }
+.view.route-exit-active.dir-forward {
+  transform: translate3d(-100%, 0, 0);
+  transition: transform .22s cubic-bezier(.22,.9,.26,1);
+}
+
+.view.route-exit.dir-backward        { transform: translate3d(0,0,0); }
+.view.route-exit-active.dir-backward {
+  transform: translate3d(100%, 0, 0);
+  transition: transform .22s cubic-bezier(.22,.9,.26,1);
+}
+
+/* ENTER: neuer Inhalt fährt rein */
+.view.route-enter.dir-forward        { transform: translate3d(100%, 0, 0); }
+.view.route-enter-active.dir-forward {
+  transform: translate3d(0, 0, 0);
+  transition: transform .22s cubic-bezier(.22,.9,.26,1);
+}
+
+.view.route-enter.dir-backward        { transform: translate3d(-100%, 0, 0); }
+.view.route-enter-active.dir-backward {
+  transform: translate3d(0, 0, 0);
+  transition: transform .22s cubic-bezier(.22,.9,.26,1);
+}
+
+/* Weniger Bewegung respektieren */
+@media (prefers-reduced-motion: reduce){
+  .view.route-exit-active,
+  .view.route-enter-active {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* === Mobile: volle Slide-Transition wie Desktop (Push/Pull) === */
+@media (max-width: 768px){
+  /* EXIT: aktueller Inhalt fährt komplett raus */
+  .view.route-exit.dir-forward        { transform: translate3d(0,0,0); opacity: 1; }
+  .view.route-exit-active.dir-forward {
+    transform: translate3d(-100%, 0, 0);
+    opacity: 1;
+    transition: transform .10s cubic-bezier(.22,.9,.26,1);
+  }
+
+  .view.route-exit.dir-backward        { transform: translate3d(0,0,0); opacity: 1; }
+  .view.route-exit-active.dir-backward {
+    transform: translate3d(100%, 0, 0);
+    opacity: 1;
+    transition: transform .10s cubic-bezier(.22,.9,.26,1);
+  }
+
+  /* ENTER: neuer Inhalt fährt komplett rein */
+  .view.route-enter.dir-forward        { transform: translate3d(100%, 0, 0); opacity: 1; }
+  .view.route-enter-active.dir-forward {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    transition: transform .10s cubic-bezier(.22,.9,.26,1);
+  }
+
+  .view.route-enter.dir-backward        { transform: translate3d(-100%, 0, 0); opacity: 1; }
+  .view.route-enter-active.dir-backward {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    transition: transform .10s cubic-bezier(.22,.9,.26,1);
+  }
+}
+
+
+/* Während Animation: keine Low-FX-Umschaltung (Flicker-Fix) */
+body.animating { /* bewusst leer gelassen */ }
+
+
+
+
+/* === Nav Drag/Scrub Feedback === */
+.nav .nav-link.hover{
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.24);
+}
+
+.nav.dragging .nav-spot{
+  /* etwas größer & kräftiger beim Ziehen */
+  height: 64px;
+  box-shadow:
+    0 14px 32px rgba(0,0,0,.42),
+    inset 0 1px 0 rgba(255,255,255,.28);
+  background: linear-gradient(135deg, rgba(34,211,238,.45), rgba(110,231,183,.45));
+  transition: transform .12s ease, width .12s ease, height .12s ease, box-shadow .12s ease;
+}
+
+/* leichte Skalierung des angehoverten Tabs während des Drags */
+@media (max-width: 768px){
+  .nav.dragging .nav-link.hover{
+    transform: translateZ(0) scale(0.98);
+  }
+}
+
+/* iOS Safe-Area – solide Statusbar (black): Kein Padding am Body nötig */
+html, body{
+  background-color: var(--bg-deep); /* gleiche Grundfarbe wie dein Gradient-BG */
+}
+
+/* Desktop-Topbar bleibt gemütlich */
+@media (min-width: 769px){
+  .topbar{
+    padding-top: 14px; /* kein env() hier nötig, Statusbar ist nicht translucide */
+  }
+}
+
+/* iOS: Auto-Zoom beim Fokussieren verhindern (Inputs >=16px) */
+@media (max-width: 768px){
+  input,
+  select,
+  textarea,
+  .field input,
+  .field select,
+  .field textarea,
+  .sw-weights .weight-input,
+  .gear-input,
+  .weight-input {
+    font-size: 16px !important;
+    line-height: 1.25;
+  }
+}
+
+/* Safari/iOS: keine Text-Autovergrößerung */
+html { -webkit-text-size-adjust: 100%; }
+
+/* === Stoppuhr: Status-Badge Farben === */
+#sw-state-badge.running {
+  background: rgba(34, 197, 94, .2);   /* Grün-Hintergrund */
+  border-color: rgba(34, 197, 94, .6);
+  color: #4ade80; /* Tailwind green-400 */
+}
+
+#sw-state-badge.paused {
+  background: rgba(251, 191, 36, .2);  /* Orange-Hintergrund */
+  border-color: rgba(251, 191, 36, .6);
+  color: #fbbf24; /* Tailwind amber-400 */
+}
+
+#sw-state-badge.results {
+  background: rgba(59, 130, 246, .2);   /* Blau-Hintergrund */
+  border-color: rgba(59, 130, 246, .6); /* Rahmen in Blau */
+  color: #93c5fd;                       /* Text Blau-300/400 */
+}
+
+/* ===== Modals (Onboarding) ===== */
+.modal[hidden]{ display:none !important; }
+.modal{
+  position: fixed; inset: 0; z-index: 50;
+  display:grid; place-items:center;
+}
+.modal-backdrop{
+  position:absolute; inset:0;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(4px) saturate(140%);
+}
+.modal-card{
+  position:relative;
+  width: min(520px, 92vw);
+  background: color-mix(in oklab, var(--glass-bg) 100%, transparent);
+  border: 1px solid color-mix(in oklab, var(--glass-brd) 100%, transparent);
+  box-shadow: var(--shadow);
+  border-radius: 14px;
+  padding: 18px;
+}
+.modal-card .field + .field{ margin-top: 10px; }
+.modal-card input{
+  width:100%; padding:12px 14px; border-radius:12px;
+  border:1px solid rgba(255,255,255,.2);
+  background: rgba(0,0,0,.2); color: var(--txt);
+}
+
+/* ===== Startseiten-Gruß oberhalb der „Heute“-Karte ===== */
+.home-greeting{
+  font-size: clamp(28px, 3.2vw, 38px);
+  font-family: "Calibri Light", Calibri, "Segoe UI", sans-serif;
+  letter-spacing: .3px;
+  color: white;
+  opacity: .9;
+  text-shadow: none;
+  margin: 0 2px 0; /* <-- kein zusätzlicher Abstand oben/unten */
+  line-height: 1.2;
+}
+
+.today-meta{
+  display: grid;
+  gap: 4px;          /* etwas enger */
+  margin: 0 2px 2px; /* kein Extra-Abstand nach oben */
+}
+
+/* Optik der Stoppuhr-Karte etwas dichter */
+.stopwatch { padding-top: 8px; }
+#sw.is-collapsed { max-height: 60px; }
+
+/* Meta/Plan: etwas mehr Luft unter dem Pill */
+.today-meta .pill { margin-bottom: 2px; }
+
+/* „Heute“-Karte insgesamt minimal dichter */
+.card--big .today-body { gap: 14px; }
+
+/* Badge etwas kompakter, damit in einer Zeile mit Zeit bleibt */
+#sw-state-badge { padding: 4px 8px; }
+
+/* =========================================================
+   Gradient Glow Theme (no glass, high contrast, neon accents)
+   Aktiv: <body class="theme-gradient-glow">
+   ---------------------------------------------------------
+   - ersetzt Glas/Blur durch matte, dunkle Panels
+   - fügt leuchtende Verläufe & Glow-Akzente hinzu
+   - hält Layout & Komponentenlogik unverändert
+   ========================================================= */
+
+.theme-gradient-glow {
+  /* Basis-Farben */
+  --txt: #eef2f6;
+  --muted: #a9b3c1;
+
+  /* Dunkler Untergrund + Panel-Farben (ohne Glas) */
+  --bg-1: #070b11;         /* Hintergrund dunkel */
+  --bg-2: #0b1117;         /* leichte Nuance */
+  --panel: #0f1621;        /* Karten/Container */
+  --panel-brd: #1e2a3a;    /* dezenter Rand */
+
+  /* Akzent-Verlauf (Gradient Glow) – anpassbar */
+  --accent-1: #22d3ee;     /* cyan */
+  --accent-2: #8b5cf6;     /* violet */
+  --accent-3: #f472b6;     /* pink (optional für Hover) */
+
+  /* Effekte */
+  --shadow-strong: 0 20px 60px rgba(0,0,0,.45);
+  --glow: 0 0 24px rgba(34,211,238,.25), 0 0 48px rgba(139,92,246,.18);
+}
+
+/* --- Hintergrund: dunkler Grund + weiche Verlaufslights --- */
+.theme-gradient-glow body {
+  background:
+    radial-gradient(1200px 800px at 15% 10%, rgba(34,211,238,.14), transparent 60%),
+    radial-gradient(1200px 800px at 85% 90%, rgba(139,92,246,.14), transparent 60%),
+    linear-gradient(180deg, var(--bg-1), var(--bg-2));
+  background-attachment: fixed;
+  backdrop-filter: none;              /* kein Sättigungs/Blur-Boost */
+  color: var(--txt);
+}
+
+/* vorhandene großen Blur-Spots DEAKTIVIEREN (aus dem alten Glaslook) */
+.theme-gradient-glow #app::before,
+.theme-gradient-glow #app::after { display: none !important; }
+
+/* --- Karten / Container: matt, ohne Glas, mit feinem Rand --- */
+.theme-gradient-glow .glass {
+  background: var(--panel) !important;
+  border: 1px solid var(--panel-brd) !important;
+  box-shadow: var(--shadow-strong) !important;
+  backdrop-filter: none !important;
+}
+
+.theme-gradient-glow .card { padding: 18px; border-radius: 12px; }
+
+/* Listen-Items, Badges etc. vom Glas lösen */
+.theme-gradient-glow .list li,
+.theme-gradient-glow .settings-block,
+.theme-gradient-glow .stat {
+  background: #111a27 !important;
+  border: 1px solid rgba(255,255,255,.06) !important;
+}
+
+/* Trennlinien etwas klarer */
+.theme-gradient-glow .divider {
+  background: rgba(255,255,255,.12);
+}
+
+/* Neuer blauer 3D-Button mit "Pop"-Animation beim Klicken */
+.btn.primary {
+  background: linear-gradient(180deg, #3da3ff 0%, #1e40af 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(30, 64, 175, .35);
+  transition: transform 0.15s ease, box-shadow 0.25s ease, background 0.25s ease;
+  transform: scale(1);
+}
+
+/* Hover: leicht angehoben */
+.btn.primary:hover {
+  background: linear-gradient(180deg, #60a5fa 0%, #1e3a8a 100%);
+  box-shadow: 0 6px 16px rgba(30, 64, 175, .45);
+  transform: scale(1.04);
+}
+
+/* Klick: "Pop"-Effekt (kurz größer, dann zurück) */
+.btn.primary:active {
+  transform: scale(1.08);
+  box-shadow: 0 3px 8px rgba(30, 64, 175, .3);
+}
+
+
+.theme-gradient-glow .btn.subtle {
+  background: #111a27;
+  border: 1px solid rgba(255,255,255,.14);
+  color: var(--txt);
+}
+.theme-gradient-glow .btn.ghost {
+  background: transparent;
+  border: 1px dashed rgba(255,255,255,.28);
+  color: var(--txt);
+}
+
+/* Danger-Buttons bleiben klar, ohne Glas */
+.theme-gradient-glow .btn.danger {
+  background: #ef4444;
+  color: #0b0b0b;
+  border: none;
+}
+
+/* --- Top/Bottom-Bar: matt + leichte Akzentkante --- */
+.theme-gradient-glow .topbar {
+  background: rgba(9,12,18,.72);
+  border-color: rgba(255,255,255,.06);
+  backdrop-filter: none;
+}
+.theme-gradient-glow .footer {
+  background: rgba(9,12,18,.72);
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+
+/* --- Nav-Spot: vom „Glas-Bump“ zu Neon-Verlauf --- */
+.theme-gradient-glow .nav-spot {
+  height: 40px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2)) !important;
+  box-shadow: var(--glow), 0 12px 28px rgba(0,0,0,.4);
+  backdrop-filter: none;
+}
+.theme-gradient-glow .nav-spot::before { display: none; } /* Bump entfernen */
+.theme-gradient-glow .nav .nav-link.active { background: transparent; border-color: transparent; }
+
+/* Mobile: höhere Spot-Höhe beibehalten */
+@media (max-width: 768px){
+  .theme-gradient-glow .nav-spot { height: 56px; }
+}
+
+/* --- Kalender: Trainingstage als matte, leicht leuchtende Zellen --- */
+.theme-gradient-glow .day {
+  background: #111a27;
+  border: 1px solid rgba(255,255,255,.10);
+}
+.theme-gradient-glow .day.has-training {
+  background:
+    linear-gradient(135deg,
+      color-mix(in oklab, var(--accent-1) 24%, transparent),
+      color-mix(in oklab, var(--accent-2) 24%, transparent));
+  border-color: rgba(255,255,255,.22);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset;
+}
+.theme-gradient-glow .day.today {
+  border-color: rgba(110,231,183,.5);
+  box-shadow: 0 0 0 2px rgba(110,231,183,.25) inset;
+}
+
+/* --- Formulare / Inputs: klare Felder, ohne Blur --- */
+.theme-gradient-glow .field input,
+.theme-gradient-glow .field select,
+.theme-gradient-glow .sw-weights .weight-input,
+.theme-gradient-glow .gear-input,
+.theme-gradient-glow .field textarea {
+  background: #0c121b !important;
+  border: 1px solid #1b2736 !important;
+  color: var(--txt) !important;
+  box-shadow: none !important;
+}
+.theme-gradient-glow .sw-weights .weight-input {
+  border: 0 !important;
+  border-bottom: 1px solid rgba(255,255,255,.22) !important;
+  background: transparent !important;
+}
+
+/* --- Stoppuhr-Badge-Farben bleiben, aber auf dunklem Panel --- */
+.theme-gradient-glow #sw-state-badge.running {
+  background: rgba(34,197,94,.16);
+  border-color: rgba(34,197,94,.5);
+  color: #86efac;
+}
+.theme-gradient-glow #sw-state-badge.paused {
+  background: rgba(251,191,36,.14);
+  border-color: rgba(251,191,36,.45);
+  color: #facc15;
+}
+.theme-gradient-glow #sw-state-badge.results {
+  background: rgba(59,130,246,.14);
+  border-color: rgba(59,130,246,.45);
+  color: #93c5fd;
+}
+
+/* --- Kleines Extra: aktive Primary-Focus-States mit leuchtender Outline --- */
+.theme-gradient-glow .btn.primary:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--accent-1) 60%, transparent);
+  outline-offset: 2px;
+  box-shadow: var(--glow);
+}
+
+/* Motion-Respect: keine animierten Farbflächen in Reduce-Motion */
+@media (prefers-reduced-motion: reduce){
+  .theme-gradient-glow * { transition: none !important; }
+}
+
+/* === Mobile: Abstand zwischen "Hallo <Name>" und Datum reduzieren === */
+@media (max-width: 768px) {
+  .home-greeting {
+    margin-bottom: 0;       /* entferne unteren Abstand */
+    gap: 0;
+  }
+  .today-meta {
+    margin-top: 0;
+    gap: 0;          /* schiebt Datum näher an Begrüßung */
+  }
+
+  /* GPU/Layer-Hinweise für mobile Route-Transitions */
+.view{
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  contain: paint;
+  backface-visibility: hidden;
+}
+
+}
+
+/* ===== Low-FX-Modus während Route-Animation (Flicker-Fix: deaktiviert) ===== */
+body.animating { /* bewusst leer gelassen */ }
+
+/* Spotlight-Transition darf gern weich bleiben */
+body.animating .nav-spot{
+  transition:
+    transform .12s ease,
+    width .12s ease,
+    height .12s ease !important;
+}
+
+
+/* === Mobile Heute & Kalender: oben ~1/3 Blau, unten Weiß (scrollt mit, exakte Linie) === */
+@media (max-width: 768px){
+  body.route-heute,
+  body.route-kalender,
+  body.theme-gradient-glow.route-heute,
+  body.theme-gradient-glow.route-kalender {
+    background: linear-gradient(
+      to bottom,
+      #0e3264 0,
+      #0c2e5e var(--home-split),
+      #dfdcdc var(--home-split),  /* gleicher Stop → harte Kante */
+      #d4d2d2 100%
+    ) !important;
+    background-attachment: local !important;   /* scrollt mit */
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    backdrop-filter: none !important;
+    overflow-y: auto;
+  }
+
+  /* Lichter ausblenden */
+  body.route-heute #app::before,
+  body.route-heute #app::after,
+  body.route-kalender #app::before,
+  body.route-kalender #app::after {
+    display: none !important;
+  }
+
+  /* Seite scrollt, View hält sich zurück */
+  body.route-heute .view,
+  body.route-kalender .view {
+    overflow-y: visible !important;
+    height: auto !important;
+    min-height: 100dvh;
+  }
+}
+
+/* === Mobile: Kalender-Karten im weißen Bereich wie auf Startseite === */
+@media (max-width: 768px){
+  /* Startpunkt der Inhalte unterhalb der Blau/Weiß-Kante */
+  body.route-kalender .section{
+    margin-top: calc(var(--home-split) + 16px);
+    padding: 0 16px;
+  }
+
+  /* Beide Kalender-Karten hell/weiß darstellen */
+  body.route-kalender .glass.card{
+    background: #ffffff !important;
+    border: 1px solid rgba(0,0,0,.08) !important;
+    color: #0b1117 !important;
+    box-shadow: 0 10px 28px rgba(0,0,0,.15);
+  }
+
+  /* Typografie in den Karten */
+body.route-kalender .section h1:not(.mobile-cal-title),
+body.route-kalender .section h2,
+body.route-kalender .section .muted,
+body.route-kalender .section .calendar-head,
+body.route-kalender .section span,
+body.route-kalender .section label{
+  color: #0b1117 !important;
+  opacity: .9;
+}
+
+
+  /* Listen-/Badge-Optik analog zu „Nächste Termine“ auf Start */
+  body.route-kalender .list li{
+    background: #f7f9fc !important;
+    border: 1px solid rgba(0,0,0,.06) !important;
+    color: #0b1117 !important;
+  }
+  body.route-kalender .badge{
+    background: #eef2f7 !important;
+    border: 1px solid rgba(0,0,0,.12) !important;
+    color: #0b1117 !important;
+  }
+
+  /* Kalenderzell-Panel bleibt hell, Trainings-Tage heben sich weiterhin ab */
+  body.route-kalender .day{
+    background: #ffffff !important;
+    border: 1px solid rgba(0,0,0,.10) !important;
+  }
+  body.route-kalender .day.has-training{
+    background:
+      linear-gradient(135deg,
+        color-mix(in oklab, #22d3ee 24%, transparent),
+        color-mix(in oklab, #8b5cf6 24%, transparent)) !important;
+    border-color: rgba(0,0,0,.12) !important;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.04) inset;
+  }
+
+  /* Buttons/Inputs in Karten hell */
+  body.route-kalender .field input,
+  body.route-kalender .field select{
+    background: #f8fafc !important;
+    border: 1px solid rgba(0,0,0,.12) !important;
+    color: #0b1117 !important;
+  }
+}
+
+
+
+/* === Mobile Startseite: Plan als schwebende, breitere Karte auf der Blau/Weiß-Linie === */
+@media (max-width: 768px){
+  :root {
+    --home-split: 33vh;         
+    --plan-card-offset: -70px;  
+  }
+
+  body.route-heute #today-plan-pill{
+    position: fixed;
+    top: var(--home-split);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 15;
+
+    /* Größere, auffälligere Karte */
+    background: #ffffff !important;
+    color: #0b1117 !important;
+    border: 1px solid rgba(0,0,0,.08);
+    border-radius: 20px;
+    padding: 18px 28px;          /* mehr Innenabstand */
+    min-width: 80vw;             /* breiter: 80% der Viewport-Breite */
+    max-width: 92vw;             /* aber nicht ganz randlos */
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 10px 28px rgba(0,0,0,.25);
+  }
+
+  /* Text über der Karte */
+  body.route-heute #plan-hint{
+    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 12px;
+  }
+
+  /* Restlicher Inhalt rutscht tiefer */
+  body.route-heute .card--big{
+    margin-top: calc(var(--home-split) + var(--plan-card-offset));   
+  }
+}
+
+/* === FIX: Schwebende Pill (Startseite) zentriert auf der Trennlinie – inkl. iPhone Safe-Area === */
+@media (max-width: 768px){
+  body.route-heute #today-plan-pill {
+    position: fixed;
+    top: calc(var(--home-split) - var(--safe-top)); /* 🧩 Korrektur gegen Notch-Offset */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 15;
+
+    /* Optik beibehalten */
+    background: #ffffff !important;
+    color: #0b1117 !important;
+    border: 1px solid rgba(0,0,0,.08);
+    border-radius: 20px;
+    padding: 18px 28px;
+    min-width: 80vw;
+    max-width: 92vw;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 10px 28px rgba(0,0,0,.25);
+  }
+
+  /* Ruhetag-Pill im Black Mode: gleiche Korrektur */
+  .theme-black.route-heute #today-plan-pill {
+    top: calc(var(--home-split) - var(--safe-top));
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255,255,255,.28) !important;
+    box-shadow: 0 10px 28px rgba(0,0,0,.45) !important;
+  }
+}
+
+
+/* === Mobile: Heute-Startseite – nur Streak zeigen, rechtsbündig === */
+@media (max-width: 768px){
+  /* In der Heute-Ansicht die Stats auf 1 Spalte und nach rechts bündig */
+  body.route-heute .stats{
+    grid-template-columns: 1fr;
+    justify-items: end;
+  }
+
+  /* "Erfolg · 7 Tage" und "Erfolg · 30 Tage" ausblenden */
+  body.route-heute .stat:has(#stat-7d),
+  body.route-heute .stat:has(#stat-30d){
+    display: none !important;
+  }
+}
+
+/* === Mobile Startseite: nur leere schwarze Karte unter "Ruhetag / frei" ausblenden === */
+@media (max-width: 768px){
+  /* Nur ausblenden, wenn Ruhetag aktiv ist */
+  body.route-heute.is-rest .glass.card.card--big {
+    display: none !important;
+  }
+}
+
+
+/* === Mobile: Abstand + weiße Karte für "Nächste Termine" (fix für theme-gradient-glow) === */
+@media (max-width: 768px){
+
+  /* Abstand */
+  body.route-heute:not(.is-rest) .card--big + .card { margin-top: -160px; }
+  body.route-heute.is-rest .stopwatch-standalone + .card { margin-top: 160px; }
+
+  /* Karte selbst auf weiß */
+  .theme-gradient-glow body.route-heute .stopwatch-standalone + .card,
+  .theme-gradient-glow body.route-heute .card--big + .card {
+    background: #ffffff !important;
+    border: 1px solid rgba(0,0,0,.08) !important;
+    color: #0b1117 !important;
+    box-shadow: 0 10px 28px rgba(0,0,0,.15);
+  }
+
+  /* Texte */
+  .theme-gradient-glow body.route-heute .stopwatch-standalone + .card h2,
+  .theme-gradient-glow body.route-heute .stopwatch-standalone + .card .muted,
+  .theme-gradient-glow body.route-heute .stopwatch-standalone + .card span,
+  .theme-gradient-glow body.route-heute .card--big + .card h2,
+  .theme-gradient-glow body.route-heute .card--big + .card .muted {
+    color: #0b1117 !important;
+    opacity: .9;
+  }
+
+  /* Listen-Einträge hell (überstimmt die Theme-Regel mit !important) */
+  .theme-gradient-glow body.route-heute .stopwatch-standalone + .card .list li,
+  .theme-gradient-glow body.route-heute .card--big + .card .list li {
+    background: #f7f9fc !important;
+    border: 1px solid rgba(0,0,0,.06) !important;
+    color: #0b1117 !important;
+  }
+
+  /* Badges hell */
+  .theme-gradient-glow body.route-heute .stopwatch-standalone + .card .badge,
+  .theme-gradient-glow body.route-heute .card--big + .card .badge {
+    background: #eef2f7 !important;
+    border: 1px solid rgba(0,0,0,.12) !important;
+    color: #0b1117 !important;
+  }
+
+  /* Sicherheit: Pill über allem */
+  body.route-heute.is-rest #today-plan-pill { z-index: 100; }
+}
+
+
+
+
+/* ===== Stoppuhr als Standalone unter dem weißen Bereich (Mobil) ===== */
+.stopwatch-standalone{
+  margin-top: 8px;           /* Desktop/Fallback */
+}
+
+@media (max-width: 768px){
+  body.route-heute .stopwatch-standalone{
+    /* unter der Blau/Weiß-Kante etwas Luft und horizontale Paddings */
+    margin-top: 10px;
+    padding: 0 16px 12px;
+    color: #0b1117; /* dunkler Text auf weißem Bereich */
+  }
+
+  body.route-heute .stopwatch-standalone .muted{
+    color: #334155;
+  }
+
+  body.route-heute .stopwatch-standalone .btn.subtle{
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #0b1117;
+  }
+
+  body.route-heute .stopwatch-standalone .sw-weights .weight-input{
+    color: #0b1117 !important;
+    border-bottom-color: #0b1117 !important;
+  }
+}
+
+/* Buttons oberhalb der Stoppuhr etwas einrücken */
+.actions--top { 
+  margin: 6px 2px 8px; 
+  display: flex; 
+  gap: 10px; 
+  flex-wrap: wrap; 
+}
+
+/* Mobile: wenn keine .card--big mehr vorhanden ist,
+   bekommt die Folgekarte ("Nächste Termine") weiter unten
+   die gleiche weiße Optik & den Abstand wie zuvor */
+@media (max-width: 768px){
+  body.route-heute .stopwatch-standalone + .card{
+    margin-top: 24px;
+    background: #ffffff !important;
+    border: 1px solid rgba(0,0,0,.08) !important;
+    color: #0b1117 !important;
+    box-shadow: 0 10px 28px rgba(0,0,0,.15);
+  }
+
+   body.route-heute .stopwatch-standalone:has(#sw) + .card{
+    margin-top: 60px; /* dein bisheriger Wert; passe nach Geschmack an */
+  }
+  body.route-heute .stopwatch-standalone + .card h2,
+  body.route-heute .stopwatch-standalone + .card .muted{
+    color: #0b1117; opacity: .9;
+  }
+  body.route-heute .stopwatch-standalone + .card .list li{
+    background: #f7f9fc; 
+    border: 1px solid rgba(0,0,0,.06); 
+    color: #0b1117;
+  }
+  body.route-heute .stopwatch-standalone + .card .badge{
+    background: #eef2f7; 
+    border: 1px solid rgba(0,0,0,.12); 
+    color: #0b1117;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Abstand der Buttons direkt unter der blauen/weißen Trennkante */
+  .actions--top {
+    margin-top: 140px; /* exakt unter dem blauen Bereich */
+    margin-bottom: 12px;
+    padding: 0 16px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Buttons dürfen etwas größer & breiter sein */
+  .actions--top .btn {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+
+    /* Am Ruhetag: Buttons komplett ausblenden, Lücke entfernen */
+  body.route-heute.is-rest .actions--top {
+    display: none;
+    margin: 0;
+    padding: 0;
+  }
+
+    /* Folgekarte ("Nächste Termine") etwas näher heranholen */
+  body.route-heute.is-rest .glass.card.card--big + .card {
+    margin-top: 60px; /* vorher war -200px – je nach Geschmack */
+  }
+}
+
+@keyframes btn-pop {
+  0%   { transform: scale(1); }
+  60%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* generische Klasse, die wir kurzzeitig setzen */
+.btn.is-popping {
+  animation: btn-pop 180ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* === FIX: Pill überlappt "Nächste Termine" am Ruhetag (mobil) === */
+@media (max-width: 768px){
+  /* Genug Abstand unter der schwebenden Pill */
+  body.route-heute.is-rest .stopwatch-standalone + .card{
+    margin-top: 160px !important; /* ggf. 140–200px feinjustieren */
+  }
+
+  /* Sicherheit: Pill bleibt darüber */
+  body.route-heute.is-rest #today-plan-pill{
+    z-index: 100;
+  }
+
+  /* Falls irgendwo noch ein alter Negativabstand greift, neutralisieren */
+  body.route-heute.is-rest .glass.card.card--big + .card{
+    margin-top: 0 !important;
+  }
+}
+
+/* === Mobile: "Nächste Termine" Liste hell machen (über ID) === */
+@media (max-width: 768px){
+  /* Listeneinträge */
+  .theme-gradient-glow #upcoming-list li{
+    background: #f5f7fa !important;
+    border: 1px solid rgba(0,0,0,.06) !important;
+    color: #0b1117 !important;
+  }
+
+  /* Badge in der Liste */
+  .theme-gradient-glow #upcoming-list .badge{
+    background: #eef2f7 !important;
+    border: 1px solid rgba(0,0,0,.12) !important;
+    color: #0b1117 !important;
+  }
+}
+
+/* =========================================================
+   NAV: Heroicons sauber stapeln + Toggle Outline ↔ Solid
+   ========================================================= */
+.nav .icon{
+  position: relative;
+  display: inline-block;
+  width: 28px;     /* einheitliche Icongröße */
+  height: 28px;
+  line-height: 0;
+}
+
+/* Beide Varianten exakt übereinander legen */
+.nav .icon .icon-outline,
+.nav .icon .icon-filled{
+  position: absolute;
+  inset: 0;
+  display: block;
+  line-height: 0;
+}
+
+/* SVG-Grundregeln */
+.nav .icon svg{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Outline-Variante optisch angleichen (Heroicons Outline) */
+.nav .icon .icon-outline svg{
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;        /* 1.5–2.0 ist sweet spot */
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Solid-Variante (Heroicons Solid) */
+.nav .icon .icon-filled svg{
+  fill: currentColor;
+}
+
+/* Sichtbarkeit per Opacity (verhindert Layout-Jumps) */
+.nav .icon .icon-outline{ opacity: 1; }
+.nav .icon .icon-filled{  opacity: 0; pointer-events: none; }
+
+/* Aktiver Tab zeigt NUR das gefüllte Icon */
+.nav-link.active .icon .icon-outline{ opacity: 0; }
+.nav-link.active .icon .icon-filled{  opacity: 1; }
+
+/* Grundfarbe der Icons/Texte (dunkel auf Weiß) */
+.nav-link{ color: #0f172a; }          /* slate-900-ish */
+.nav-link .icon{ opacity: .82; }      /* inaktiv leicht gedimmt */
+.nav-link.active .icon{ opacity: 1; } /* aktiv voll sichtbar */
+
+
+/* =========================================================
+   MOBILE NAV: Weißes Bottom-Bar-Design + Labels sichtbar
+   ========================================================= */
+@media (max-width: 768px){
+  .topbar{
+    background: #ffffff !important;
+    border-top: 1px solid rgba(0,0,0,.06) !important;
+    border-bottom: none !important;
+    backdrop-filter: none !important;
+    box-shadow: 0 -1px 0 rgba(0,0,0,.06), 0 -8px 24px rgba(0,0,0,.06);
+  }
+
+  .nav{
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .nav-link{
+    color: #0e3264 !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    min-width: 64px;
+    padding: 6px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Label sichtbar unter Icon */
+  .nav-link .label{
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    margin-top: 2px !important;
+    overflow: visible !important;
+    clip: auto !important;
+    border: 0 !important;
+    display: block;
+    font-size: 10px;
+    line-height: 1;
+    font-weight: 600;
+    opacity: .75;
+    text-align: center;
+  }
+
+  /* Aktiver Tab: Label und Icon kräftiger */
+  .nav-link.active .label{
+    opacity: 1;
+    font-weight: 800;
+  }
+
+  .nav .icon{
+    width: 32px;   /* Icons minimal größer */
+    height: 32px;
+    transition: transform .25s ease, opacity .2s ease;
+  }
+
+  /* Aktiver Tab hebt Icon leicht hervor */
+  .nav-link.active .icon{
+    transform: scale(1.06);
+    opacity: 1;
+  }
+
+  /* Inaktive Tabs leicht blasser */
+  .nav-link:not(.active) .icon,
+  .nav-link:not(.active) .label{
+    opacity: .7;
+  }
+
+  /* Spotlight-Höcker auf Weiß ausblenden */
+  .nav-spot{ display: none !important; }
+
+  /* Tap-Feedback minimal */
+  .nav-link:active{
+    transform: translateY(1px);
+  }
+}
+
+
+/* =========================================================
+   NAV ICON: sanfter Größenwechsel beim Aktivieren
+   ========================================================= */
+
+/* Standardgröße minimal kleiner halten */
+.nav .icon {
+  transform: scale(0.92);
+  transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1); /* smooth „pop“ */
+}
+
+/* Wenn aktiv → leicht größer */
+.nav-link.active .icon {
+  transform: scale(1);
+}
+
+/* Optional: beim Tippen (kurzes „Bouncen“) */
+.nav-link:active .icon {
+  transform: scale(1.08);
+  transition-duration: 0.12s;
+}
+
+/* ===== Streak-Flammen-Badge ===== */
+.streak-badge{
+  position: relative;
+  width: 150px;
+  height: 150px;
+  display: none;          /* Standard: auf Desktop ausgeblendet */
+  margin-left: auto;      /* rechtsbündig im Meta-Bereich */
+  margin-top: 20px;
+}
+
+.streak-badge img{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.streak-badge .streak-num{
+  position: absolute;
+  margin-top: 30px;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 3rem;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Optional: kleine „Pop“-Animation, wenn der Streak steigt */
+@keyframes streak-pop {
+  0%   { transform: scale(1); }
+  60%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 768px){
+  /* Die komplette Stats-Kachel ausblenden (statt nur 7d/30d) */
+  .stats { display: none !important; }
+
+  /* Flammen-Badge nur mobil anzeigen */
+  .streak-badge { display: block; }
+}
+
+/* =========================================================
+   BLACK MODE 
+   ========================================================= */
+
+/* Nav-Bar & allgemeine Farben (mobil) */
+@media (max-width: 768px){
+  .theme-black .topbar{
+    background: #000000 !important;
+    border-top: 1px solid #111111 !important;
+    border-bottom: none !important;
+    box-shadow: 0 -1px 0 rgba(255,255,255,.06), 0 -8px 24px rgba(0,0,0,.45);
+  }
+
+  .theme-black .nav-link{
+    color: #ffffff !important;          /* Labels & Icon-Farbe via currentColor */
+    border-color: transparent !important;
+    background: transparent !important;
+  }
+  .theme-black .nav-link .label{
+    color: #ffffff !important;
+    opacity: .9 !important;
+  }
+  .theme-black .nav .icon{ opacity: 1 !important; }
+}
+
+/* Hintergrund-Aufteilung (ersetzt Blau/Weiß durch Schwarz/„fast Schwarz“) inkl. helle Linie */
+@media (max-width: 768px){
+  body.theme-black.route-heute,
+  body.theme-black.route-kalender{
+    /* harte helle Linie an der Kante: */
+    background:
+      linear-gradient(
+        to bottom,
+        #000000 0,
+        #000000 calc(var(--home-split) - 0.5px),
+        rgba(255,255,255,.22) calc(var(--home-split) - 0.5px),
+        rgba(255,255,255,.22) calc(var(--home-split) + 0.5px),
+        #0a0a0a  calc(var(--home-split) + 0.5px),
+        #0a0a0a 100%
+      ) !important;
+    background-attachment: local !important;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+  }
+
+  /* Lichter im Black Mode deaktiviert */
+  .theme-black.route-heute #app::before,
+  .theme-black.route-heute #app::after,
+  .theme-black.route-kalender #app::before,
+  .theme-black.route-kalender #app::after{
+    display: none !important;
+  }
+
+  /* View lässt Seite scrollen */
+  .theme-black.route-heute .view,
+  .theme-black.route-kalender .view{
+    overflow-y: visible !important;
+    height: auto !important;
+    min-height: 100dvh;
+  }
+}
+
+/* Karten/Elemente in den mobilen Tabs weiß darstellen */
+@media (max-width: 768px){
+  .theme-black.route-kalender .section{
+    margin-top: calc(var(--home-split) + 16px);
+    padding: 0 16px;
+  }
+
+  .theme-black.route-kalender .glass.card,
+  .theme-black.route-heute .stopwatch-standalone + .card,
+  .theme-black.route-heute .card--big + .card{
+    background: #ffffff !important;
+    border: 1px solid rgba(0,0,0,.08) !important;
+    color: #0b1117 !important;
+    box-shadow: 0 10px 28px rgba(0,0,0,.15);
+  }
+
+.theme-black.route-kalender .section h1:not(.mobile-cal-title),
+.theme-black.route-kalender .section h2,
+.theme-black.route-kalender .section .muted,
+.theme-black.route-kalender .section .calendar-head,
+.theme-black.route-kalender .section span,
+.theme-black.route-kalender .section label{
+  color: #0b1117 !important;
+  opacity: .9;
+}
+
+  .theme-black #upcoming-list li,
+  .theme-black .list li,
+  .theme-black .settings-block,
+  .theme-black .stat{
+    background: #f7f9fc !important;
+    border: 1px solid rgba(0,0,0,.06) !important;
+    color: #0b1117 !important;
+  }
+  .theme-black .badge{
+    background: #eef2f7 !important;
+    border: 1px solid rgba(0,0,0,.12) !important;
+    color: #0b1117 !important;
+  }
+
+  /* Kalenderzellen: Panel hell, Trainingstage leicht akzentuiert */
+  .theme-black.route-kalender .day{
+    background: #ffffff !important;
+    border: 1px solid rgba(0,0,0,.10) !important;
+  }
+  .theme-black.route-kalender .day.has-training{
+    background:
+      linear-gradient(135deg,
+        color-mix(in oklab, #e2e8f0 24%, transparent),
+        color-mix(in oklab, #cbd5e1 24%, transparent)) !important;
+    border-color: rgba(0,0,0,.12) !important;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.04) inset;
+  }
+}
+
+/* Schwebende Pill (mobil) → voll schwarz + helle Umrandung, Text weiß */
+@media (max-width: 768px){
+  .theme-black.route-heute #today-plan-pill{
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255,255,255,.28) !important;
+    box-shadow: 0 10px 28px rgba(0,0,0,.45) !important;
+  }
+}
+
+/* Stoppuhr-Bereich (mobil) innerhalb des unteren dunklen Teils → Lesbarkeit */
+@media (max-width: 768px){
+  .theme-black.route-heute .stopwatch-standalone{
+    margin-top: 10px;
+    padding: 0 16px 12px;
+    color: #e5e7eb; /* hellgrau auf sehr dunklem Grau */
+  }
+  .theme-black .sw-weights .weight-input{
+    color: #0b1117 !important;           /* in weißen Karten weiterhin dunkel */
+    border-bottom-color: #0b1117 !important;
+  }
+}
+
+/* Mobile Labels/Icons bleiben weiß, kein Spotlight */
+@media (max-width: 768px){
+  .theme-black .nav-spot{ display: none !important; }
+  .theme-black .nav-link.active .label{ opacity: 1 !important; font-weight: 800 !important; }
+}
+
+/* Black Mode (mobil): "Nächste Termine" wie die schwebende Pill */
+@media (max-width: 768px){
+  /* Karte direkt nach der Stoppuhr */
+  body.theme-black.route-heute .stopwatch-standalone + .card,
+  /* Karte nach der großen Heute-Karte (falls vorhanden) */
+  body.theme-black.route-heute .card--big + .card{
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255,255,255,.28) !important;
+    box-shadow: 0 10px 28px rgba(0,0,0,.45) !important;
+  }
+
+  /* Typo in der Karte */
+  body.theme-black.route-heute .stopwatch-standalone + .card h2,
+  body.theme-black.route-heute .stopwatch-standalone + .card .muted,
+  body.theme-black.route-heute .stopwatch-standalone + .card span,
+  body.theme-black.route-heute .card--big + .card h2,
+  body.theme-black.route-heute .card--big + .card .muted,
+  body.theme-black.route-heute .card--big + .card span{
+    color: #ffffff !important;
+    opacity: .9;
+  }
+
+  /* Listeneinträge in "Nächste Termine" */
+  body.theme-black.route-heute #upcoming-list li{
+    background: rgba(255,255,255,.06) !important;
+    border: 1px solid rgba(255,255,255,.20) !important;
+    color: #ffffff !important;
+  }
+
+  /* Badges in der Liste */
+  body.theme-black.route-heute #upcoming-list .badge{
+    background: rgba(255,255,255,.10) !important;
+    border: 1px solid rgba(255,255,255,.28) !important;
+    color: #ffffff !important;
+  }
+}
+
+
+
+/* iPhone Notch/Safe-Area: oben Platz schaffen (mobil) */
+@media (max-width: 768px){
+  body.route-heute,
+  body.route-kalender,
+  body.theme-gradient-glow.route-heute,
+  body.theme-gradient-glow.route-kalender,
+  body.theme-black.route-heute,
+  body.theme-black.route-kalender{
+    padding-top: var(--safe-top) !important; /* ⬅️ verhindert Überlappung mit Uhr/Notch */
+  }
+}
+
+/* === Mobile Black Mode: Kalender-Karte auf die Trennlinie setzen === */
+@media (max-width: 768px){
+  /* Section nicht mehr global runterdrücken – wir positionieren die 1. Karte gezielt */
+  .theme-black.route-kalender .section{
+    margin-top: 0;            /* war: calc(var(--home-split) + 16px) */
+    padding: 0 16px;
+  }
+
+/* 1) Erste Kalenderkarte exakt auf der Linie ausrichten + horizontal zentrieren */
+.theme-black.route-kalender .section .glass.card:first-of-type{
+  position: relative;
+
+  /* Safe-Area kompensieren → echte Mitte auf der Trennlinie */
+  margin-top: calc(var(--home-split) - var(--safe-top));
+
+  /* Vertikal zentriert über der Linie (wie vorher) */
+  transform: translateY(-50%);
+  z-index: 15;
+
+  /* Optik wie die schwarze Pill */
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255,255,255,.28) !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,.45) !important;
+  border-radius: 16px;
+
+  /* Neu: wirklich zentrieren + angenehme Maxbreite */
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 560px;          /* gerne anpassen/entfernen */
+  box-sizing: border-box;    /* falls padding/border addiert wird */
+}
+
+  /* 2. Karte (Form/Editor unter dem Kalender) – normaler Abstand darunter */
+  .theme-black.route-kalender .section .glass.card:nth-of-type(2){
+    margin-top: 16px; /* angenehmer Abstand unter der schwebenden Karte */
+  }
+
+  /* Typo in der 1. (schwarzen) Karte passend hell */
+  .theme-black.route-kalender .section .glass.card:first-of-type h1,
+  .theme-black.route-kalender .section .glass.card:first-of-type h2,
+  .theme-black.route-kalender .section .glass.card:first-of-type .muted,
+  .theme-black.route-kalender .section .glass.card:first-of-type span,
+  .theme-black.route-kalender .section .glass.card:first-of-type label{
+    color: #ffffff !important;
+    opacity: .92;
+  }
+
+  /* In der 1. Karte die Kalenderzellen dunkler halten */
+  .theme-black.route-kalender .section .glass.card:first-of-type .day{
+    background: #0b0b0b !important;
+    border: 1px solid rgba(255,255,255,.18) !important;
+  }
+  .theme-black.route-kalender .section .glass.card:first-of-type .day.has-training{
+    background:
+      linear-gradient(135deg,
+        color-mix(in oklab, #22d3ee 18%, transparent),
+        color-mix(in oklab, #8b5cf6 18%, transparent)) !important;
+    border-color: rgba(255,255,255,.22) !important;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset;
+  }
+}
+
+/* === Mobile Kalender-Titel oben fixiert (ohne Layout-Verschiebung) === */
+@media (max-width: 768px) {
+  /* Container als Bezugspunkt */
+  body.route-kalender .section {
+    position: relative;
+  }
+
+  .mobile-cal-title {
+    position: absolute;
+    top: calc(var(--safe-top) + 12px); /* unter der Notch / Statusleiste */
+    transform: translateX(-50%);
+    z-index: 30; /* über der Karte sichtbar */
+    left: 30%;
+    font-family: "Urbanist", Inter, sans-serif;
+    font-weight: 800;
+    font-size: 2.5rem;
+    letter-spacing: 0.2px;
+    text-align: center;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    pointer-events: none; /* blockiert keine Buttons darunter */
+  }
+
+  /* Im hellen/weißen Kalenderbereich bleibt der Text hell sichtbar */
+  body.route-kalender .mobile-cal-title,
+  body.theme-gradient-glow.route-kalender .mobile-cal-title,
+  body.theme-black.route-kalender .mobile-cal-title {
+    color: #ffffff;
+  }
+}
+
+/* === iOS Performance: Low-FX während Routenanimation === */
+@supports (-webkit-touch-callout: none) {
+  /* Große Schatten & Glas-Effekte aus */
+  body.animating .glass,
+  body.animating .list li,
+  body.animating .stat,
+  body.animating .settings-block {
+    box-shadow: none !important;
+  }
+
+  body.animating .topbar,
+  body.animating .footer {
+    backdrop-filter: none !important;
+  }
+
+  /* Glow-Spots temporär weg */
+  body.animating #app::before,
+  body.animating #app::after {
+    display: none !important;
+  }
+
+  /* Spotlight-Buckel nicht mitanimieren */
+  body.animating .nav-spot {
+    display: none !important;
+  }
+
+  /* Animierte View sicher auf die GPU schieben */
+  body.animating .view {
+    will-change: transform, opacity !important;
+    transform: translate3d(0,0,0) !important;
+  }
+}
+
+/* iOS: die View generell auf eine eigene Compositing-Layer */
+@supports (-webkit-touch-callout: none) {
+  .view { transform: translateZ(0); }
+}
