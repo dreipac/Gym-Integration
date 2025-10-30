@@ -1,4 +1,4 @@
-const CACHE = "gymplan-v1";
+const CACHE = "gymplan-v2";
 const ASSETS = [
   "./",
   "index.html",
@@ -42,3 +42,4 @@ self.addEventListener("fetch", (e) => {
     caches.match(req).then((cached) => cached || fetch(req))
   );
 });
+
