@@ -11,11 +11,25 @@ const regMsg      = document.getElementById("reg-msg");
 
 function show(view){
   const isLogin = view === "login";
+  // Sichtbarkeit der Forms
   formLogin.hidden = !isLogin;
   formRegister.hidden = isLogin;
   (isLogin ? loginMsg : regMsg).textContent = "";
-  (isLogin ? loginMsg : regMsg).classList.remove("err");
+
+  // Hero-Texte umschalten
+  const titleEl = document.querySelector(".hero-title");
+  const subEl   = document.querySelector(".hero-subtitle");
+  if (titleEl && subEl) {
+    if (isLogin) {
+      titleEl.textContent = "Hallo";
+      subEl.textContent   = "Melde dich mit deinem Konto an";
+    } else {
+      titleEl.textContent = "Neu bei uns?";
+      subEl.textContent   = "Jetzt ein neues Konto erstellen und dein Training managen";
+    }
+  }
 }
+
 
 // Links: Login <-> Register (SPA)
 if (linkToReg)   linkToReg.addEventListener("click", (e)=>{ e.preventDefault(); show("register"); });
@@ -110,3 +124,30 @@ formRegister.addEventListener("submit", async (e) => {
   const { data: { session } } = await supabase.auth.getSession();
   if (session) location.href = "index.html";
 });
+
+// ===== Theme Switcher =====
+const btnLight = document.getElementById('btn-light');
+const btnDark  = document.getElementById('btn-dark');
+
+function applyTheme(theme){
+  const dark = theme === 'dark';
+  document.body.classList.toggle('theme-dark', dark);
+  localStorage.setItem('theme', dark ? 'dark' : 'light');
+
+  if (btnLight && btnDark){
+    btnLight.classList.toggle('is-active', !dark);
+    btnDark.classList.toggle('is-active', dark);
+    btnLight.setAttribute('aria-pressed', String(!dark));
+    btnDark.setAttribute('aria-pressed', String(dark));
+  }
+}
+
+// Initial aus Storage/System übernehmen
+const savedTheme = localStorage.getItem('theme') ||
+  (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+applyTheme(savedTheme);
+
+// Click-Handler
+btnLight?.addEventListener('click', ()=>applyTheme('light'));
+btnDark?.addEventListener('click', ()=>applyTheme('dark'));
+
