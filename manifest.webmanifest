@@ -5,10 +5,11 @@
   "scope": "/Gym-Integration/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#0ffffff",
+  "theme_color": "#ffffff",
   "icons": [
     { "src": "icons/logo.png", "sizes": "192x192", "type": "image/png" },
     { "src": "icons/logo-512.png", "sizes": "512x512", "type": "image/png" }
   ]
 }
+
 
