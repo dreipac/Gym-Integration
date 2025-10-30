@@ -9,11 +9,7 @@
 /* Root-Element ist die Quelle für den Statusbar-Hintergrund */
 html{
   height: 100%;
-  background:
-    /* oberer Bereich inkl. Safe Area als Verlauf */
-    linear-gradient(135deg, #f08db7 0%, #6b5bff 100%) 0 0 / 100% calc(240px + env(safe-area-inset-top)) no-repeat,
-    /* Rest weiß */
-    #ffffff;
+  background:#ffffff;
 }
 
 /* Body nicht übermalen lassen */
@@ -189,15 +185,17 @@ body{
 }
 
 
-.mobile-header__bg{
+.mobile-header__bg {
   position: absolute;
-  /* Hintergrund beginnt oberhalb um die Safe-Area, füllt bis unten */
   top: calc(-1 * env(safe-area-inset-top));
   left: 0;
   right: 0;
   bottom: 0;
   background: linear-gradient(135deg, #f08db7 0%, #6b5bff 100%);
+  /* Füge das hier hinzu */
+  padding-top: env(safe-area-inset-top);
 }
+
 
 /* Welle, die nach unten in das Weiß übergeht */
 .mobile-header__wave{
@@ -219,7 +217,6 @@ body{
      padding-top: calc(170px + env(safe-area-inset-top));
   }
 }
-
 
 
 
