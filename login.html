@@ -21,55 +21,81 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <main class="auth-wrap">
-    <div class="card">
-      <div class="brand">🏋️ GymPlan</div>
+<main class="auth-wrap">
+  <div class="auth-inner">
+    <div class="hero">
+  <h1 class="hero-title">Hallo</h1>
+  <p class="hero-subtitle">Melde dich in deinem Konto an</p>
+</div>
 
-      <div class="tabs">
-        <button id="tab-login" class="tab active" type="button">Anmelden</button>
-        <button id="tab-register" class="tab" type="button">Konto erstellen</button>
+<!-- LOGIN VIEW (neu gestylt) -->
+<form id="form-login" class="form form-hello" autocomplete="on">
+  <div class="pill-input">
+    <span class="icon" aria-hidden="true">
+      <!-- User-Icon -->
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+        <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-5 0-9 2.5-9 5.5V22h18v-2.5C21 16.5 17 14 12 14Z"/>
+      </svg>
+    </span>
+    <input id="login-email" type="email" required autocomplete="email" placeholder="E-Mail" />
+  </div>
+
+  <div class="pill-input">
+    <span class="icon" aria-hidden="true">
+      <!-- Lock-Icon -->
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+        <path d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2Zm-6 0V6a2 2 0 0 1 4 0v2Z"/>
+      </svg>
+    </span>
+    <input id="login-password" type="password" required autocomplete="current-password" placeholder="Passwort" />
+  </div>
+
+  <div class="inline-links right">
+    <a href="#" id="link-forgot">Passwort vergessen?</a>
+  </div>
+
+  <div class="cta-row">
+    <div class="cta-title">Anmelden</div>
+    <button class="btn cta" type="submit" aria-label="Anmelden">
+      <span class="arrow">→</span>
+    </button>
+  </div>
+
+  <p id="login-msg" class="msg" role="alert" aria-live="polite"></p>
+
+  <div class="inline-links">
+    <span class="muted">Noch kein Konto?</span>
+    <a href="#" id="link-to-register">Jetzt registrieren</a>
+  </div>
+</form>
+
+
+    <!-- REGISTER VIEW (SPA in derselben Seite) -->
+    <form id="form-register" class="form" hidden autocomplete="on">
+      <label class="field">
+        <span>E-Mail</span>
+        <input id="reg-email" type="email" required autocomplete="email" />
+      </label>
+      <label class="field">
+        <span>Passwort</span>
+        <input id="reg-password" type="password" minlength="6" required autocomplete="new-password" />
+      </label>
+      <button class="btn primary" type="submit">Konto erstellen</button>
+
+      <div class="inline-links">
+        <span class="muted">Schon ein Konto?</span>
+        <a href="#" id="link-to-login">Zurück zum Login</a>
       </div>
 
-      <!-- LOGIN VIEW -->
-      <form id="form-login" class="form" autocomplete="on">
-        <label class="field">
-          <span>E-Mail</span>
-          <input id="login-email" type="email" required autocomplete="email" />
-        </label>
-        <label class="field">
-          <span>Passwort</span>
-          <input id="login-password" type="password" required autocomplete="current-password" />
-        </label>
-        <button class="btn primary" type="submit">Anmelden</button>
-        <p class="muted hint">Noch kein Konto?
-          <a href="#" id="link-to-register">Jetzt erstellen</a>
-        </p>
-        <p id="login-msg" class="msg" role="alert" aria-live="polite"></p>
-      </form>
-
-      <!-- REGISTER VIEW (SPA in der Seite) -->
-      <form id="form-register" class="form" hidden autocomplete="on">
-        <label class="field">
-          <span>E-Mail</span>
-          <input id="reg-email" type="email" required autocomplete="email" />
-        </label>
-        <label class="field">
-          <span>Passwort</span>
-          <input id="reg-password" type="password" minlength="6" required autocomplete="new-password" />
-        </label>
-        <button class="btn primary" type="submit">Konto erstellen</button>
-        <p class="muted hint">Schon ein Konto?
-          <a href="#" id="link-to-login">Jetzt anmelden</a>
-        </p>
-        <p id="reg-msg" class="msg" role="alert" aria-live="polite"></p>
-      </form>
-    </div>
+      <p id="reg-msg" class="msg" role="alert" aria-live="polite"></p>
+    </form>
 
     <footer class="foot">
       <a href="index.html">Zur Startseite</a>
     </footer>
-  </main>
+  </div>
+</main>
+
   <script src="login.js"></script>
 </body>
 </html>
-
