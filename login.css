@@ -36,9 +36,14 @@ body::before {
 
 /* Wrapper mittig, ohne "Card"/Fenster-Look */
 .auth-wrap{
-  min-height:100dvh; display:grid; place-items:center; padding:24px;
-  background:#ffffff;            /* Weißer Grund */
+  position: relative;            /* neu: Referenz für die Deko */
+  overflow: hidden;              /* neu: Blob sauber beschneiden */
+  min-height:100dvh;
+  display:grid; place-items:center; padding:24px;
+  background:#ffffff;
 }
+
+
 
 /* Inhalt liegt "nackt" auf weißem Hintergrund */
 .auth-inner{
@@ -76,10 +81,24 @@ body::before {
 .btn{
   appearance:none; border:none; border-radius:14px; padding:12px 14px; font-weight:800; cursor:pointer
 }
-.btn.primary{
-  background: linear-gradient(180deg, #3da3ff, #1e40af); color:#fff;
-  box-shadow:0 4px 12px rgba(30,64,175,.25);
+.btn.primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;                /* Abstand zwischen Text und Pfeil */
+  font-weight: 700;         /* fetter Text */
+  font-size: 1rem;
+  transition: all 0.2s ease;
 }
+
+.btn.primary svg {
+  transition: transform 0.2s ease;
+}
+
+.btn.primary:hover svg {
+  transform: translateX(4px);  /* Pfeil bewegt sich leicht beim Hover */
+}
+
 .btn.subtle{
   background:#f1f5f9; border:1px solid #e2e8f0; color:#0b1117;
 }
@@ -99,7 +118,7 @@ body::before {
 .inline-links{
   display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:6px;
 }
-.inline-links a{ color:#838585; text-decoration:none; font-weight:200; }
+.inline-links a{ color:#008cff; text-decoration:none; font-weight:200; }
 
 /* Hero */
 .hero { margin: 4px 0 18px }
@@ -231,6 +250,99 @@ body::before {
   }
 }
 
+/* Untere linke Deko (mobil) */
+/* Inhalt über der Deko */
+.auth-inner{ position: relative; z-index: 1; }
+
+/* Kleine Deko unten links */
+.mobile-deco {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 20vw;      /* kleiner */
+  height: 10vh;     /* flacher */
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.9;     /* leicht transparent für dezente Wirkung */
+}
+
+.mobile-deco svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Nur mobil sichtbar */
+@media (min-width: 641px) {
+  .mobile-deco { display: none; }
+}
+
+/* ===== Theme Switcher (oben rechts) ===== */
+.theme-switcher{
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 50;
+}
+.theme-btn{
+  width: 40px; height: 40px;
+  border: 0; border-radius: 9999px;
+  display: grid; place-items: center;
+  cursor: pointer;
+  background: #f3f4f6;              /* Light-Button-Grund */
+  color: #111827;
+  box-shadow: 0 6px 18px rgba(0,0,0,.12);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+#btn-dark{
+  background: linear-gradient(135deg,#1f2937,#111827); /* Dark-Button-Grund */
+  color: #fff;
+}
+.theme-btn.is-active{
+  box-shadow: 0 0 0 3px rgba(59,130,246,.35) inset;
+}
+.theme-btn:hover{ transform: translateY(-1px); }
+.theme-btn:focus-visible{ outline: 3px solid #60a5fa; outline-offset: 2px; }
+
+@media (max-width:640px){
+  .theme-switcher{ top:10px; right:10px; }
+}
+
+/* ===== Dark-Theme Farben (minimal-invasiv) – FIX ===== */
+body.theme-dark{ background:#0b1220; color:#e5e7eb; }
+.theme-dark .auth-wrap{ background:#0b1220; }
+
+/* WICHTIG: keine dunkle Karte im Dark Mode */
+.theme-dark .auth-inner{ background:transparent; }
+
+/* Basistexte/Links */
+.theme-dark h1, .theme-dark h2, .theme-dark label,
+.theme-dark p, .theme-dark a{ color:#e5e7eb; }
+
+/* Die PILL-CONTAINER waren weiß → im Dark Mode abdunkeln */
+.theme-dark .pill-input{
+  background:#111827;
+  box-shadow: 0 8px 24px rgba(0,0,0,.45);
+}
+
+/* Input selbst im Dark Mode */
+.theme-dark input, .theme-dark textarea, .theme-dark select{
+  background:transparent;         /* wir stylen den Container, nicht das Input  */
+  color:#e5e7eb;
+}
+
+/* Platzhalter & Icons lesbarer machen */
+.theme-dark ::placeholder{ color:#9ca3af; }
+.theme-dark .pill-input .icon{ color:#cbd5e1; opacity:.9; }
+
+/* CTA-Button-Schatten etwas dezenter im Dark Mode */
+.theme-dark .btn.primary{ box-shadow: 0 8px 18px rgba(0,0,0,.45); }
+
+.theme-dark .mobile-header__wave path {
+  fill: #0b1220; /* gleiche Farbe wie body.theme-dark Hintergrund */
+}
 
 
 
