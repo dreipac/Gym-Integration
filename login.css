@@ -21,6 +21,18 @@ body{
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
 }
 
+/* Element, das nur den Status-Bar-Bereich füllt */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: env(safe-area-inset-top);
+  background: linear-gradient(135deg, #f08db7 0%, #6b5bff 100%);
+  pointer-events: none;
+  z-index: 9999;
+}
+
 
 /* Wrapper mittig, ohne "Card"/Fenster-Look */
 .auth-wrap{
@@ -218,6 +230,7 @@ body{
      padding-top: calc(170px + env(safe-area-inset-top));
   }
 }
+
 
 
 
