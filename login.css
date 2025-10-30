@@ -193,21 +193,22 @@ body{
 }
 
 
-/* ===== App-Bar mit Curve (rosa → violett), PWA-safe ===== */
+/* ===== App-Bar mit Curve (rosa → violett), iOS-PWA fix ===== */
 .appbar {
   position: fixed;
   top: 0; left: 0; right: 0;
-  /* Höhe + Safe-Area, damit der Hintergrund BIS GANZ OBEN geht */
-  height: calc(140px + env(safe-area-inset-top, 0px));
-  padding-top: env(safe-area-inset-top, 0px);
+  height: calc(140px + env(safe-area-inset-top, 0px)); /* inkl. Safe-Area */
   z-index: 1;
   overflow: hidden;
   pointer-events: none;
 }
 
+/* WICHTIG: top negativ + height verlängern => füllt Safe-Area ÜBER der App-Bar */
 .appbar__bg {
   position: absolute;
-  inset: 0;                     /* füllt die komplette App-Bar inkl. Safe-Area */
+  left: 0; right: 0;
+  top: calc(-1 * env(safe-area-inset-top, 0px));
+  height: calc(100% + env(safe-area-inset-top, 0px));
   background: linear-gradient(135deg, #f08db7 0%, #6b5bff 100%);
 }
 
@@ -224,13 +225,12 @@ body{
   .appbar { display: none; }
 }
 
-/* Inhalt unter die App-Bar schieben */
+/* Inhalt unter die sichtbare App-Bar schieben (ohne Safe-Area-Anteil) */
 @media (max-width: 640px){
-  .auth-wrap {
-    /* identisch zur sichtbaren App-Bar-Höhe ohne Safe-Area */
-    padding-top: 160px;
-  }
+  .auth-wrap { padding-top: 160px; }
 }
+
+
 
 
 
