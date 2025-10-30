@@ -12,7 +12,7 @@ body{
   margin:0;
   /* 1. Hintergrund-Layer: Verlauf nur oben (inkl. Safe-Area) */
   background:
-    linear-gradient(135deg, #f08db7 0%, #6b5bff 100%) 0 0 / 100% calc(220px + env(safe-area-inset-top))
+    linear-gradient(135deg, #f08db7 0%, #6b5bff 100%) 0 0 / 100% calc(220px + env(safe-area-inset-top));
   color:var(--txt);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
 }
@@ -211,6 +211,7 @@ body{
      padding-top: calc(170px + env(safe-area-inset-top));
   }
 }
+
 
 
 
