@@ -1,0 +1,164 @@
+:root{
+  --txt:#0b1117; --muted:#64748b;
+  --brd:#e2e8f0; --panel:#ffffff;
+  --accent1:#0ea5e9; --accent2:#1e40af;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:#ffffff;            /* Vollflächig WEISS */
+  color:var(--txt);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+
+/* Wrapper mittig, ohne "Card"/Fenster-Look */
+.auth-wrap{
+  min-height:100dvh; display:grid; place-items:center; padding:24px;
+  background:#ffffff;            /* Weißer Grund */
+}
+
+/* Inhalt liegt "nackt" auf weißem Hintergrund */
+.auth-inner{
+  width:min(560px, 94vw);
+  background:transparent;        /* kein Panel/Glass */
+  border:none;                   /* kein Rahmen */
+  padding:0;                     /* keine Box-Optik */
+}
+
+.brand{
+  font-size:28px; font-weight:900; margin:0 0 12px 0; letter-spacing:.2px;
+}
+
+/* Formulare im Fluss, auf Weiß */
+.form{display:grid; gap:12px; margin-top:10px}
+.field{display:grid; gap:6px}
+/* Klassische Felder ohne Rand – nur Schatten auf dem Input */
+.field input{
+  width:100%;
+  padding:14px 16px;
+  border-radius:999px;            /* gleiche Pill-Optik */
+  appearance:none; -webkit-appearance:none;
+  border:none; outline:none; background:#ffffff; color:var(--txt);
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+  transition: box-shadow .2s ease, transform .1s ease;
+}
+.field input:focus{
+  box-shadow:0 10px 28px rgba(0,0,0,.14);
+  transform: translateY(-1px);
+}
+
+
+
+/* Buttons */
+.btn{
+  appearance:none; border:none; border-radius:14px; padding:12px 14px; font-weight:800; cursor:pointer
+}
+.btn.primary{
+  background: linear-gradient(180deg, #3da3ff, #1e40af); color:#fff;
+  box-shadow:0 4px 12px rgba(30,64,175,.25);
+}
+.btn.subtle{
+  background:#f1f5f9; border:1px solid #e2e8f0; color:#0b1117;
+}
+
+.muted{color:var(--muted); margin:0}
+.hint{font-size:.95rem}
+.msg{min-height:1.2em; color:#0ea5e9}
+.msg.err{color:#ef4444}
+
+.foot{margin-top:18px; text-align:center; color:var(--muted)}
+.foot a{color:#0ea5e9; text-decoration:none}
+
+/* Fix für die versteckte Register-Ansicht */
+[hidden]{display:none !important}
+
+/* Kleines Helferlein für die Link-Zeilen unten */
+.inline-links{
+  display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:6px;
+}
+.inline-links a{ color:#838585; text-decoration:none; font-weight:200; }
+
+/* Hero */
+.hero { margin: 4px 0 18px }
+.hero-title{ font-size:64px; line-height:1; font-weight:900; letter-spacing:.2px; margin:0 0 6px }
+.hero-subtitle{ font-size:20px; color:var(--muted); margin:0 }
+
+/* Pill Inputs ohne Rand – nur Schatten auf dem Container */
+.pill-input{
+  display:flex; align-items:center; gap:10px;
+  padding:14px 16px; border-radius:999px;
+  border:none;                                   /* Rand weg */
+  background:#ffffff;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);         /* nur Schatten */
+}
+
+.pill-input + .pill-input{ margin-top:18px }
+.pill-input .icon{ opacity:.55; display:inline-flex }
+.pill-input input{
+  appearance:none; -webkit-appearance:none;
+  border:none; outline:none; background:transparent;
+  flex:1; font-size:16px; color:var(--txt);
+}
+.pill-input input:focus{ outline:none; }
+
+
+/* „Passwort vergessen?“ rechts */
+.inline-links.right{ justify-content:flex-end; margin-top:10px }
+
+/* CTA-Reihe wie im Screenshot: links groß "Anmelden", rechts runder Pfeil */
+.cta-row{
+  display:flex; align-items:center; justify-content:flex-end;
+  gap:14px; margin:28px 0 6px;
+}
+.cta-title{ font-size:32px; font-weight:800 }
+.btn.cta{
+  width:56px; height:56px; border-radius:999px;
+  background: linear-gradient(135deg, #f08db7, #6b5bff);
+  color:#fff; font-size:22px; display:inline-grid; place-items:center;
+  box-shadow:0 10px 24px rgba(107,91,255,.35);
+}
+.btn.cta .arrow{ transform:translateX(0); transition:transform .15s ease }
+.btn.cta:hover .arrow{ transform:translateX(2px) }
+
+/* Formular etwas luftiger */
+.form-hello{ margin-top:18px }
+
+
+/* Mobile & Tablet: zentriert mit Abstand rechts/links */
+@media (max-width: 640px){
+  .auth-wrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px; /* gleichmäßiger Abstand rundum */
+  }
+
+  .auth-inner{
+    width: 100%;
+    max-width: 420px; /* maximale Breite, bleibt zentriert */
+    margin: 0 auto;
+  }
+
+  /* Eingabefelder nehmen volle Breite innerhalb des Containers */
+  .pill-input{
+    width: 100%;
+  }
+
+  /* Formularbreite zentriert halten */
+  .form-hello{
+    width: 100%;
+  }
+
+  /* Textlink "Passwort vergessen?" rechtsbündig innerhalb des Blocks */
+  .inline-links.right{
+    justify-content: flex-end;
+    margin-right: 8px;
+  }
+
+  /* CTA-Zeile (Anmelden + Pfeil) bleibt zentriert */
+  .cta-row{
+    justify-content: center;
+  }
+}
