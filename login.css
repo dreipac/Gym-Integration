@@ -6,8 +6,9 @@
   --bg-deep-2: #ffffff;
 }
 *{box-sizing:border-box}
-html,body{height:100%}
+html,body{height:100%; background:#ffffff;}
 body{
+  padding-top: env(safe-area-inset-top);
   margin:0;
   background:#ffffff;            /* Vollflächig WEISS */
   color:var(--txt);
@@ -163,4 +164,5 @@ body{
     justify-content: center;
   }
 }
+
 
