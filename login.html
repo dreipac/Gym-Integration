@@ -6,8 +6,8 @@
   <!-- PWA / iOS Standalone -->
     <link rel="manifest" href="manifest.webmanifest?v=4">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#f08db7">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#ffffff">
   
   <title>GymPlan • Anmelden</title>
   <link rel="stylesheet" href="login.css" />
@@ -22,14 +22,15 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-<!-- Deko-Punkte oben rechts -->
-<div class="decor-dots" aria-hidden="true">
-  <span class="dot dot1"></span>
-  <span class="dot dot2"></span>
-  <span class="dot dot3"></span>
-  <span class="dot dot4"></span>
-</div>
+<!-- Mobile Gradient Header (ohne Dynamic Island) -->
+<div class="mobile-header" aria-hidden="true">
+  <div class="mobile-header__bg"></div>
 
+  <!-- Obere Welle -->
+  <svg class="mobile-header__wave" viewBox="0 0 375 100" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,100 C80,72 180,112 300,84 C340,76 375,78 375,78 L375,100 L0,100 Z" fill="#ffffff"/>
+  </svg>
+</div>
 
 <main class="auth-wrap">
   <div class="auth-inner">
@@ -109,7 +110,6 @@
   <script src="login.js"></script>
 </body>
 </html>
-
 
 
 
