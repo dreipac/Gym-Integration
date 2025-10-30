@@ -2,13 +2,14 @@
   --txt:#0b1117; --muted:#64748b;
   --brd:#e2e8f0; --panel:#ffffff;
   --accent1:#0ea5e9; --accent2:#1e40af;
-  background: linear-gradient(135deg, #f08db7 0%, #6b5bff 100%);
+  --grad: linear-gradient(135deg, #f08db7 0%, #6b5bff 100%);
 }
 *{box-sizing:border-box}
 /* Root-Element ist die Quelle für den Statusbar-Hintergrund */
-html{
+html, body{
+  margin:0;
   height: 100%;
-  background: linear-gradient(135deg, #f08db7 0%, #6b5bff 100%);
+  background:  var(--grad);
 }
 
 /* Body nicht übermalen lassen */
@@ -27,7 +28,7 @@ body::before {
   top: 0; left: 0;
   width: 100vw;
   height: env(safe-area-inset-top);
-  background: linear-gradient(135deg, #f08db7 0%, #6b5bff 100%);
+  background: var(--grad);
   pointer-events: none;
   z-index: 9999;
 }
@@ -229,6 +230,7 @@ body::before {
      padding-top: calc(170px + env(safe-area-inset-top));
   }
 }
+
 
 
 
