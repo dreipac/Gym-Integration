@@ -2135,29 +2135,44 @@ body.route-kalender .section label{
   .nav-link.nav-menu{ display: none !important; }
 }
 
-/* === Einstellungen: mobil vollflächig, ohne Bottom-Navi === */
 @media (max-width: 768px){
-  /* route-Klasse sorgt fürs gezielte Ausblenden */
+  /* Top/Bottom-Bar in den Einstellungen ausblenden */
   body.route-einstellungen .topbar{ display: none !important; }
   body.route-einstellungen .footer{ display: none !important; }
 
+  /* Seite selbst: keine seitliche Bewegung / kein Scroll-Chaining nach links/rechts */
+  body.route-einstellungen{
+    overflow-x: hidden !important;
+  }
+
+  /* Nur die View scrollt – und zwar ausschließlich vertikal */
   body.route-einstellungen .view{
     padding: 0 !important;
     height: 100dvh !important;
     min-height: 100dvh !important;
-    overflow: auto !important;
+
+    /* 👉 nur vertikales Scrollen erlauben */
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    /* iOS: flüssiges Scrolling + nur pan-y (kein pan-x/diagonal) */
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    overscroll-behavior-x: none;   /* blockt seitlichen „Wobble“ */
+    overscroll-behavior-y: contain;/* verhindert Scroll-Ketteneffekte */
   }
 
-  /* Sektion füllt Fläche; Karten bekommen Standard-Padding */
+  /* Inhalt der Einstellungen */
   .settings-fullscreen{
     max-width: 900px;
     margin: 0 auto;
     padding: 12px 16px 20px;
     display: grid;
     gap: 12px;
+    min-height: 100%;
   }
 
-  /* Obere Werkzeugleiste (Zurück) */
+  /* Header fix am oberen Rand der View */
   .fs-header{
     position: sticky; top: 0; z-index: 5;
     display: grid;
@@ -2186,5 +2201,7 @@ body.route-kalender .section label{
   .fs-title{
     margin: 0; font-size: 1.2rem; font-weight: 800; text-align: center;
   }
-  .fs-spacer{ width: 36px; height: 1px; opacity: 0; } /* Balance rechts */
+  .fs-spacer{ width: 36px; height: 1px; opacity: 0; }
 }
+
+
