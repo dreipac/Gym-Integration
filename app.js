@@ -1666,6 +1666,49 @@ if (state.user && state.user.firstName && state.user.lastName) return;
   setTimeout(() => { try{ $first.focus(); }catch{} }, 0);
 }
 
+/* ---------- Drawer (Menü) ---------- */
+function initDrawer(){
+  const btn = document.getElementById("menu-toggle");
+  const drawer = document.getElementById("drawer");
+  const panel = drawer ? drawer.querySelector(".drawer-panel") : null;
+  const backdrop = document.getElementById("drawer-backdrop");
+  const closeBtn = document.getElementById("drawer-close");
+  const logoutBtn = document.getElementById("drawer-logout");
+
+  if (!btn || !drawer) return;
+
+  const open = () => {
+    drawer.classList.add("open");
+    drawer.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    // Fokus-Safety:
+    try { panel && panel.focus && panel.focus(); } catch {}
+  };
+  const close = () => {
+    drawer.classList.remove("open");
+    drawer.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  };
+
+  btn.addEventListener("click", open);
+  backdrop && backdrop.addEventListener("click", close);
+  closeBtn && closeBtn.addEventListener("click", close);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+
+  // Links im Drawer schließen ihn nach Navigation
+  drawer.querySelectorAll("a.drawer-link").forEach(a => a.addEventListener("click", close));
+
+  // Abmelden im Drawer
+  if (logoutBtn){
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await sb.auth.signOut();
+      } finally {
+        location.href = "login.html";
+      }
+    });
+  }
+}
 
 
 
@@ -1709,6 +1752,7 @@ async function initApp(){
   // 🔹 Initiales Setup
   initWelcome();
   applyTheme();
+  initDrawer();
 
   // 🔹 Logout-Button aktivieren (wenn vorhanden)
   const onHash = () => {
