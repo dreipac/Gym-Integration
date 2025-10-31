@@ -20,7 +20,8 @@ const STORAGE_SW_DRAFT = "gymplan.swdraft";
 const STORAGE_RESULTS = "gymplan.results";
 const STORAGE_USER = "gymplan.user";
 const STORAGE_THEME = "gymplan.theme";
-const ROUTE_ORDER = ["heute", "kalender", "konfigurieren", "einstellungen"];
+const ROUTE_ORDER = ["heute", "kalender", "konfigurieren", "menu", "einstellungen"];
+
 
 
 const state = {
@@ -333,7 +334,7 @@ let __routeAnimating = false;
 
 function setRoute(hash){
   const target = (hash.replace("#/","") || "heute").toLowerCase();
-  const allowed = ["heute","kalender","einstellungen","konfigurieren","konfig-editor"];
+  const allowed = ["heute","kalender","einstellungen","konfigurieren","konfig-editor","menu"];
   const nextRoute = allowed.includes(target) ? target : "404";
 
   const view = q("#view");
@@ -353,6 +354,8 @@ function setRoute(hash){
 
     document.body.classList.toggle("route-kalender", state.route === "kalender");
     document.body.classList.toggle("route-heute",    state.route === "heute");
+    document.body.classList.toggle("route-einstellungen", state.route === "einstellungen"); 
+
 
     // ENTER-Phase
     if (view){
@@ -542,7 +545,6 @@ window.addEventListener("resize", updateNavSpot);
 // bei Orientation-Change (iOS/Android) hilft Resize bereits, doppelt ist ok
 
 
-/* ---------- Views ---------- */
 function render(){
   const view = q("#view");
   if(state.route === "heute"){
@@ -560,10 +562,14 @@ function render(){
   } else if(state.route === "konfig-editor"){
     view.innerHTML = q("#tpl-konfig-editor").innerHTML;
     renderKonfigEditor(view);
+  } else if(state.route === "menu"){                 
+    view.innerHTML = q("#tpl-menu").innerHTML;      
+    renderMenu(view);                                 
   } else {
     view.innerHTML = q("#tpl-404").innerHTML;
   }
 }
+
 
 
 /* Heute */
@@ -1422,6 +1428,26 @@ savePlans(); saveDone(); saveTemplates(); saveResults();
   });
 }
 
+/* Menü-Seite: Settings-Link + Logout */
+function renderMenu(root){
+  const btnLogout = q("#menu-logout", root);
+  const linkSettings = q("#menu-to-settings", root);
+
+  // Logout-Button
+  if (btnLogout){
+    btnLogout.addEventListener("click", async () => {
+      try {
+        await sb.auth.signOut();
+      } finally {
+        location.href = "login.html";
+      }
+    });
+  }
+
+  // Settings-Link ist normales <a href="#/einstellungen"> – keine Extra-Logik nötig
+}
+
+
 function renderKonfig(root){
   const btnNew = q("#cfg-new", root);
   const list = q("#cfg-list", root);
@@ -1666,52 +1692,6 @@ if (state.user && state.user.firstName && state.user.lastName) return;
   setTimeout(() => { try{ $first.focus(); }catch{} }, 0);
 }
 
-/* ---------- Drawer (Menü) ---------- */
-function initDrawer(){
-  const btn = document.getElementById("menu-toggle");
-  const drawer = document.getElementById("drawer");
-  const panel = drawer ? drawer.querySelector(".drawer-panel") : null;
-  const backdrop = document.getElementById("drawer-backdrop");
-  const closeBtn = document.getElementById("drawer-close");
-  const logoutBtn = document.getElementById("drawer-logout");
-
-  if (!btn || !drawer) return;
-
-  const open = () => {
-    drawer.classList.add("open");
-    drawer.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-    // Fokus-Safety:
-    try { panel && panel.focus && panel.focus(); } catch {}
-  };
-  const close = () => {
-    drawer.classList.remove("open");
-    drawer.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
-  };
-
-  btn.addEventListener("click", open);
-  backdrop && backdrop.addEventListener("click", close);
-  closeBtn && closeBtn.addEventListener("click", close);
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
-
-  // Links im Drawer schließen ihn nach Navigation
-  drawer.querySelectorAll("a.drawer-link").forEach(a => a.addEventListener("click", close));
-
-  // Abmelden im Drawer
-  if (logoutBtn){
-    logoutBtn.addEventListener("click", async () => {
-      try {
-        await sb.auth.signOut();
-      } finally {
-        location.href = "login.html";
-      }
-    });
-  }
-}
-
-
-
 /* ---------- Init ---------- */
 window.addEventListener("hashchange", () => setRoute(location.hash));
 
@@ -1752,7 +1732,6 @@ async function initApp(){
   // 🔹 Initiales Setup
   initWelcome();
   applyTheme();
-  initDrawer();
 
   // 🔹 Logout-Button aktivieren (wenn vorhanden)
   const onHash = () => {
