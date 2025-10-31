@@ -294,49 +294,44 @@
 
   <!-- EINSTELLUNGEN (vollflächig mobil, mit Zurück-Pfeil) -->
 <template id="tpl-settings">
-  <div class="settings-fullscreen">
+  <div class="settings-fullscreen tiktok-settings">
 
-    <!-- Kopfzeile -->
-    <div class="fs-header">
+    <!-- Kopfzeile: Pfeil links + zentrierter Titel -->
+    <div class="fs-header tiktok-header">
       <a href="#/heute" class="fs-back" aria-label="Zurück">
-        <!-- simple chevron -->
         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
           <path d="M15 19l-7-7 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <span>Zurück</span> 
+        <span>Zurück</span>
       </a>
-      <h2 class="fs-title">Einstellungen</h2> <!-- wird im CSS verborgen -->
+      <h2 class="fs-title">Einstellungen</h2>
       <div class="fs-spacer"></div>
     </div>
 
-    <!-- Darstellung / Black Mode -->
-    <div class="settings-block">
-      <!-- Label-Text links änderbar, Toggle bleibt #black-mode -->
-      <label for="black-mode" class="btn settings-row">
-        <span>Dark Mode</span>
-        <input id="black-mode" type="checkbox" />
-      </label>
+    <!-- TikTok-artige Liste -->
+    <div class="settings-groups">
+      <ul class="settings-list" role="list">
+        <li class="setting-row">
+          <span class="sr-title">Dark Mode</span>
+          <label class="sr-switch" aria-label="Dark Mode umschalten">
+            <input id="black-mode" type="checkbox" />
+            <span class="sr-slider"></span>
+          </label>
+        </li>
+
+        <li class="setting-row" id="btn-reset" role="button" tabindex="0" aria-label="Alle Daten zurücksetzen">
+          <span class="sr-title">Alles Daten zurücksetzen</span>
+          <span class="sr-chevron" aria-hidden="true">›</span>
+        </li>
+
+        <li class="setting-row destructive" id="btn-logout" role="button" tabindex="0" aria-label="Abmelden">
+          <span class="sr-title">Abmelden</span>
+        </li>
+      </ul>
     </div>
-
-    <!-- Zurücksetzen -->
-    <div class="settings-block">
-      <button id="btn-reset" class="btn settings-row">
-        <span>Alles Daten zurücksetzen</span> 
-      </button>
-    </div>
-
-    <!-- Abmelden -->
-    <div class="settings-block">
-      <button id="btn-logout" class="btn settings-row">
-        <span>Abmelden</span> 
-      </button>
-    </div>
-
-    <!-- Optionaler "Zurück"-Link unten (kannst du auch entfernen) -->
-    <a href="#/heute" class="btn subtle">Zurück</a> 
-
   </div>
 </template>
+
 
 <!-- KONFIGURIEREN -->
 <template id="tpl-konfig">
