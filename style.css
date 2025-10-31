@@ -2135,123 +2135,77 @@ body.route-kalender .section label{
   .nav-link.nav-menu{ display: none !important; }
 }
 
-/* === Einstellungen (mobil): flache Liste mit Header === */
-@media (max-width: 768px){
-  body.route-einstellungen .topbar{ display:none !important; }
-  body.route-einstellungen .footer{ display:none !important; }
-
-  /* Nur vertikales Scrollen */
-  body.route-einstellungen {
-    overflow-x: hidden !important;
-  }
-  body.route-einstellungen .view {
-    height: 100dvh !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
-  }
-
-  /* Fullscreen-Layout beibehalten */
-  .settings-fullscreen{
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-    padding: 0;
-    background: #000;
-    color: #fff;
-  }
-
-  /* Header wie vorher */
-  .fs-header{
-    position: sticky;
-    top: 0;
-    z-index: 5;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 14px;
-    background: #000;
-    border-bottom: 1px solid rgba(255,255,255,.08);
-  }
-  .fs-back{
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: #fff;
-    text-decoration: none;
-    font-weight: 700;
-  }
-  .fs-title{
-    font-size: 1.2rem;
-    font-weight: 800;
-    text-align: center;
-    margin: 0;
-  }
-  .fs-spacer{ width: 24px; height: 1px; }
-
-  /* Blöcke als Liste */
-  .settings-grid,
-  .settings-block{
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    margin: 0;
-    padding: 0;
-  }
-
-  /* Zeilen-Design */
-  .settings-block button,
-  .settings-block label,
-  .settings-block .btn,
-  .settings-block input[type="file"] {
-    width: 100%;
-    background: #111 !important;
-    color: #fff !important;
-    border: none !important;
-    text-align: left;
-    font-size: 1rem;
-    font-weight: 500;
-    padding: 16px 18px;
-    border-bottom: 1px solid rgba(255,255,255,.1);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  /* Toggle-Checkbox */
-  .settings-block input[type="checkbox"] {
-    accent-color: #22d3ee;
-    width: 20px;
-    height: 20px;
-  }
-
-  /* Klickfeedback */
-  .settings-block button:active,
-  .settings-block label:active {
-    background: rgba(255,255,255,.06) !important;
-  }
-
-  /* letzte Zeile ohne Rand */
-  .settings-block:last-of-type button,
-  .settings-block:last-of-type label {
-    border-bottom: none;
-  }
-
-  /* "Zurück"-Button unten */
-  a.btn.subtle{
-    border:none !important;
-    background:transparent !important;
-    color:#22d3ee !important;
-    text-align:center;
-    font-weight:600;
-    padding:18px;
-  }
+/* ===== TikTok-artige Settings (mobil) ===== */
+.tiktok-settings {
+  background: #000; color: #fff;
 }
 
+.tiktok-header { 
+  position: sticky; top: 0; z-index: 5;
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center; gap: 8px;
+  padding: 12px 14px;
+  background: #000;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.tiktok-header .fs-title{
+  margin:0; text-align:center; font-size: 1.25rem; font-weight: 800;
+}
+.tiktok-header .fs-back{
+  display:inline-flex; gap:6px; text-decoration:none; color:#fff; font-weight:700;
+}
 
+.settings-groups { padding: 12px; }
 
+.settings-list{
+  list-style:none; margin:0; padding:0;
+  background:#111; border:1px solid rgba(255,255,255,.10);
+  border-radius:12px; overflow:hidden;
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+}
+.setting-row{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px; padding:16px 14px;
+  background:#111; color:#fff;
+}
+.setting-row + .setting-row { border-top:1px solid rgba(255,255,255,.08); }
 
+.setting-row .sr-title{ font-size:1rem; font-weight:600; }
+
+/* Chevron (für Links/Aktionen wie „Zurücksetzen“) */
+.setting-row .sr-chevron{
+  font-weight:800; opacity:.45; transform: translateX(2px);
+}
+
+/* Destructive row */
+.setting-row.destructive .sr-title{ color:#f87171; }
+
+/* iOS-ähnlicher Switch */
+.sr-switch{ position:relative; width:50px; height:28px; display:inline-block; }
+.sr-switch input{ opacity:0; width:0; height:0; }
+.sr-slider{
+  position:absolute; inset:0; border-radius:999px;
+  background:#2a2a2a; border:1px solid rgba(255,255,255,.12);
+  transition: background .2s ease, border-color .2s ease;
+}
+.sr-slider::before{
+  content:""; position:absolute; left:3px; top:50%;
+  width:22px; height:22px; border-radius:50%; transform: translateY(-50%);
+  background:#fff; box-shadow: 0 2px 6px rgba(0,0,0,.35);
+  transition: transform .2s ease;
+}
+.sr-switch input:checked + .sr-slider{
+  background:#22d3ee; border-color: #22d3ee;
+}
+.sr-switch input:checked + .sr-slider::before{
+  transform: translate(22px, -50%);
+}
+
+/* Interaktionsfeedback */
+.setting-row[role="button"]:active { background:#141414; }
+
+/* Kompatibel mit vorhandenen Themes */
+.theme-black .settings-list { background:#0b0b0b; border-color:#1a1a1a; }
+.theme-black .setting-row + .setting-row { border-top-color:#1a1a1a; }
 
 
