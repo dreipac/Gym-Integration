@@ -127,25 +127,24 @@
     <span class="label">Einstellungen</span>
   </a>
 
-  <!-- MENÜ (nur mobil sichtbar) -->
-  <button class="nav-link menu-btn" id="menu-toggle" aria-label="Menü" type="button">
+   <!-- MENÜ (nur mobil sichtbar) -->
+  <a href="#/menu" class="nav-link nav-menu" data-route="menu" aria-label="Menü">
     <span class="icon" aria-hidden="true">
       <!-- Outline -->
       <span class="icon-outline">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="size-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
         </svg>
       </span>
       <!-- Solid -->
       <span class="icon-filled">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
           <path d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75ZM3.75 12a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15A.75.75 0 0 1 3.75 12Zm0 6.75a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Z" />
         </svg>
       </span>
     </span>
     <span class="label">Menü</span>
-  </button>
-
+  </a>
 </nav>
 
 </header>
@@ -293,11 +292,23 @@
     </section>
   </template>
 
-  <!-- EINSTELLUNGEN -->
+  <!-- EINSTELLUNGEN (vollflächig mobil, mit Zurück-Pfeil) -->
   <template id="tpl-settings">
-    <section class="section">
+    <section class="section settings-fullscreen">
+      <!-- FS-Header nur mobil sichtbar -->
+      <div class="fs-header" role="toolbar" aria-label="Einstellungen Navigation">
+        <a class="fs-back" href="#/menu" aria-label="Zurück zum Menü">
+          <!-- Heroicons chevron-left -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M15.78 4.72a.75.75 0 0 1 0 1.06L9.56 12l6.22 6.22a.75.75 0 1 1-1.06 1.06l-6.75-6.75a.75.75 0 0 1 0-1.06l6.75-6.75a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+          </svg>
+          <span>Zurück</span>
+        </a>
+        <h1 class="fs-title">Einstellungen</h1>
+        <span class="fs-spacer" aria-hidden="true"></span>
+      </div>
+
       <div class="glass card card--big">
-        <h1>Einstellungen</h1>
         <p class="muted">Daten sichern, wiederherstellen und zurücksetzen.</p>
 
         <div class="settings-block">
@@ -334,11 +345,11 @@
           <button class="btn subtle" id="btn-logout">Abmelden</button>
         </div>
 
-
-        <a class="btn subtle" href="#/heute">Zurück</a>
+        <a class="btn subtle" href="#/menu">Zurück</a>
       </div>
     </section>
   </template>
+
 
 
 <!-- KONFIGURIEREN -->
@@ -399,6 +410,23 @@
   </section>
 </template>
 
+  <!-- MENÜ (SPA-Seite) -->
+  <template id="tpl-menu">
+    <section class="section">
+      <div class="glass card card--big">
+        <h1>Menü</h1>
+        <p class="muted">Schnellzugriff auf Einstellungen und Abmelden.</p>
+
+        <div class="actions" style="margin:12px 0 18px">
+          <a class="btn primary" href="#/einstellungen" id="menu-to-settings">Einstellungen</a>
+          <button class="btn subtle" id="menu-logout">Abmelden</button>
+        </div>
+
+        <a class="btn subtle" href="#/heute">Zurück</a>
+      </div>
+    </section>
+  </template>
+
 
 
 
@@ -441,18 +469,6 @@
   <div class="modal-card" role="dialog" aria-modal="true">
     <h2 style="margin:0">Guten Start!</h2>
   </div>
-</div>
-<!-- Drawer (Menü von rechts) -->
-<div id="drawer" class="drawer" aria-hidden="true">
-  <div class="drawer-backdrop" id="drawer-backdrop"></div>
-  <aside class="drawer-panel" role="dialog" aria-label="Menü">
-    <button class="drawer-close" id="drawer-close" aria-label="Schließen">×</button>
-
-    <nav class="drawer-nav" aria-label="Seitennavigation">
-      <a href="#/einstellungen" class="drawer-link">Einstellungen</a>
-      <button id="drawer-logout" class="drawer-link logout" type="button">Abmelden</button>
-    </nav>
-  </aside>
 </div>
 
 
