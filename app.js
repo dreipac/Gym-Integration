@@ -1302,13 +1302,21 @@ clearBtn.addEventListener("click", () => {
 
 /* Einstellungen */
 function renderSettings(root){
+  // Elemente aus dem neuen Template
+  const blackToggle = q("#black-mode", root);
+  const btnReset    = q("#btn-reset",  root);
+  const btnLogout   = q("#btn-logout", root);
+
+  // (optional – falls du Export/Import zusätzlich irgendwo im Template hast)
   const btnExport = q("#btn-export", root);
   const fileInput = q("#file-import", root);
-  const btnReset  = q("#btn-reset", root);
 
-  const blackToggle = q("#black-mode", root);
+  /* ---------- Dark Mode Toggle ---------- */
   if (blackToggle){
+    // Initialzustand aus dem State setzen
     blackToggle.checked = !!(state.theme && state.theme.black);
+
+    // Toggle-Handling
     blackToggle.addEventListener("change", () => {
       state.theme = state.theme || {};
       state.theme.black = !!blackToggle.checked;
@@ -1317,117 +1325,128 @@ function renderSettings(root){
     });
   }
 
-
-btnExport.addEventListener("click", () => {
-  const payload = {
-    version: 3,
-    exportedAt: new Date().toISOString(),
-
-    // Hauptdaten
-    plans: state.plans || {},
-    done: state.done || {},
-    templates: state.templates || {},
-    results: state.results || {},
-
-    // NEU: Trainings-Konfigurationen
-    trainings: state.trainings || [],
-
-    // NEU: Stoppuhr-Zustand (optional)
-    timer: state.timer || {},
-    swUi: state.swUi || {},
-    swdrafts: state.swdrafts || {},
-
-    // NEU: User-Infos (Onboarding)
-    user: state.user || null,
-
-
-    // NEU: Theme / Modus
-    theme: state.theme || {},
-
-    // NEU: alle Storage-Versionen zur Kompatibilität
-    storageKeys: {
-      main: STORAGE_KEY,
-      done: STORAGE_DONE,
-      templates: STORAGE_TPL,
-      trainings: STORAGE_TRAININGS,
-      timer: STORAGE_TIMER,
-      user: STORAGE_USER,
-      theme: STORAGE_THEME
-    }
-  };
-
-  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "gymplan-full-backup.json";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-});
-
-
-  fileInput.addEventListener("change", async (e) => {
-    const file = e.target.files?.[0];
-    if(!file) return;
-    try{
-      const text = await file.text();
-      const data = JSON.parse(text);
-      if(!data || typeof data !== "object") throw new Error("Ungültige Datei");
-state.plans = data.plans || {};
-state.done  = data.done  || {};
-state.templates = data.templates || {};
-state.results = data.results || {};
-savePlans(); saveDone(); saveTemplates(); saveResults();
-
-  // NEU: vollständiger Restore
-  if (data.trainings) {
-    state.trainings = data.trainings;
-    saveTrainings();
-  }
-  if (data.timer) {
-    state.timer = data.timer;
-    saveTimer();
-  }
-  if (data.user) {
-    state.user = data.user;
-    cloudSaveAll();
+  /* ---------- Export (optional) ---------- */
+  if (btnExport){
+    btnExport.addEventListener("click", () => {
+      const payload = {
+        version: 3,
+        exportedAt: new Date().toISOString(),
+        plans: state.plans || {},
+        done: state.done || {},
+        templates: state.templates || {},
+        results: state.results || {},
+        trainings: state.trainings || [],
+        timer: state.timer || {},
+        swUi: state.swUi || {},
+        swdrafts: state.swdrafts || {},
+        user: state.user || null,
+        theme: state.theme || {}
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement("a");
+      a.href = url;
+      a.download = "gymplan-full-backup.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
   }
 
-  if (data.theme) {
-    state.theme = data.theme;
-    saveTheme();
-    applyTheme();
-  }
-  if (data.swdrafts) {
-    state.swdrafts = data.swdrafts;
-    saveDrafts(state.swdrafts);
+  /* ---------- Import (optional) ---------- */
+  if (fileInput){
+    fileInput.addEventListener("change", async (e) => {
+      const file = e.target.files?.[0];
+      if(!file) return;
+      try{
+        const text = await file.text();
+        const data = JSON.parse(text);
+
+        state.plans     = data.plans     || {};
+        state.done      = data.done      || {};
+        state.templates = data.templates || {};
+        state.results   = data.results   || {};
+        state.trainings = data.trainings || state.trainings;
+        state.timer     = data.timer     || state.timer;
+        state.user      = data.user      || state.user;
+        state.theme     = data.theme     || state.theme;
+        state.swdrafts  = data.swdrafts  || state.swdrafts;
+
+        savePlans(); saveDone(); saveTemplates(); saveResults();
+        saveTrainings(); saveTimer(); saveTheme(); saveDrafts(state.swdrafts);
+
+        // Theme direkt anwenden
+        applyTheme();
+
+        alert("Import erfolgreich.");
+        location.hash = "#/heute";
+        setRoute(location.hash);
+      }catch(err){
+        alert("Import fehlgeschlagen: " + err.message);
+      }finally{
+        e.target.value = "";
+      }
+    });
   }
 
+  /* ---------- Alle Daten zurücksetzen ---------- */
+  if (btnReset){
+    const triggerReset = () => {
+      if(!confirm("Wirklich alle lokalen Daten löschen? Dies kann nicht rückgängig gemacht werden.")) return;
 
-      alert("Import erfolgreich.");
+      // Lokalen Storage leeren (falls noch genutzt)
+      try { localStorage.clear(); } catch {}
+
+      // In-Memory State zurücksetzen
+      state.plans = {};
+      state.done = {};
+      state.templates = {};
+      state.results = {};
+      state.trainings = state.trainings || [];
+      state.timer = { startedAt:null, elapsedMs:0, paused:false, pausedAt:null };
+      state.swUi = { collapsed:false };
+      state.swdrafts = {};
+      state.user = state.user || null;
+      state.theme = state.theme || { black: !!(blackToggle && blackToggle.checked) };
+
+      savePlans(); saveDone(); saveTemplates(); saveResults();
+      saveTrainings(); saveTimer(); saveTheme(); saveDrafts(state.swdrafts);
+
+      applyTheme();
+      alert("Daten gelöscht.");
       location.hash = "#/heute";
       setRoute(location.hash);
-    }catch(err){
-      alert("Import fehlgeschlagen: " + err.message);
-    }finally{
-      e.target.value = "";
-    }
-  });
+    };
 
-  btnReset.addEventListener("click", () => {
-    if(!confirm("Wirklich alle lokalen Daten löschen? Dies kann nicht rückgängig gemacht werden.")) return;
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(STORAGE_DONE);
-    localStorage.removeItem(STORAGE_TPL);
-    state.plans = {};
-    state.done = {};
-    state.templates = loadTemplates();
-    alert("Daten gelöscht.");
-    location.hash = "#/heute";
-    setRoute(location.hash);
-  });
+    btnReset.addEventListener("click", triggerReset);
+    // Tastaturbedienung für die Listenzeile
+    btnReset.addEventListener("keydown", (e) => {
+      if(e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        triggerReset();
+      }
+    });
+  }
+
+  /* ---------- Logout ---------- */
+  if (btnLogout){
+    const doLogout = async () => {
+      try{
+        await sb.auth.signOut();
+      } finally {
+        location.href = "login.html";
+      }
+    };
+    btnLogout.addEventListener("click", doLogout);
+    // Tastaturbedienung
+    btnLogout.addEventListener("keydown", (e) => {
+      if(e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        doLogout();
+      }
+    });
+  }
 }
 
 /* Menü-Seite: Settings-Link + Logout */
