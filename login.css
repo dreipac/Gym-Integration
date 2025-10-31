@@ -344,6 +344,27 @@ body.theme-dark{ background:#0b1220; color:#e5e7eb; }
   fill: #0b1220; /* gleiche Farbe wie body.theme-dark Hintergrund */
 }
 
+@supports (padding: env(safe-area-inset-top)) {
+  html, body {
+    min-height: 100%;
+    background: var(--grad, #0b1220); /* dein Verlauf/Backup-Farbe */
+  }
+
+  /* Explizit die Notch-Zone füllen */
+  body::before{
+    content:"";
+    position: fixed;
+    left: 0; right: 0; top: 0;
+    height: env(safe-area-inset-top);
+    background: inherit;   /* nimmt den Body-Verlauf */
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* Falls du eine Topbar hast: */
+  .topbar { padding-top: env(safe-area-inset-top); }
+}
+
 
 
 
