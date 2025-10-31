@@ -2116,3 +2116,68 @@ body.route-kalender .section label{
 @supports (-webkit-touch-callout: none) {
   .view { transform: translateZ(0); }
 }
+
+/* ==== MOBILE NAV: Settings ausblenden, Menü-Button zeigen ==== */
+@media (max-width: 768px){
+  .nav-link.nav-settings{ display: none !important; }
+  .nav-link.menu-btn{ display: flex !important; }
+}
+@media (min-width: 769px){
+  .nav-link.menu-btn{ display: none !important; }
+}
+
+/* ==== Drawer (rechts) ==== */
+.drawer[aria-hidden="true"] { pointer-events: none; }
+.drawer{
+  position: fixed; inset: 0; z-index: 60;
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+.drawer-backdrop{
+  background: rgba(0,0,0,.45);
+  opacity: 0; transition: opacity .20s ease;
+}
+.drawer-panel{
+  width: min(92vw, 480px);
+  height: 100%;
+  background: #0f1621;               /* passt zum Theme */
+  color: var(--txt);
+  border-left: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 20px 60px rgba(0,0,0,.45);
+  transform: translateX(100%);
+  transition: transform .22s cubic-bezier(.22,.9,.26,1);
+  position: relative;
+  padding: 18px;
+}
+.drawer.open .drawer-backdrop{ opacity: 1; }
+.drawer.open .drawer-panel{ transform: translateX(0); }
+.drawer:not(.open){ pointer-events: none; }
+
+/* Close-Button */
+.drawer-close{
+  position: absolute; top: 10px; right: 12px;
+  background: transparent; border: none; color: var(--txt);
+  font-size: 28px; line-height: 1; cursor: pointer;
+}
+
+/* Drawer-Navigation */
+.drawer-nav{
+  display: grid; gap: 10px; margin-top: 28px;
+}
+.drawer-link{
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: #111a27;
+  color: var(--txt);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.drawer-link.logout{
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #0b0b0b;
+}
