@@ -386,14 +386,16 @@ function setRoute(hash){
     }
   };
 
-  if (!view || __routeAnimating){
-    state.route = nextRoute;
-    render();
-    highlightNav();
-    document.body.classList.toggle("route-kalender", state.route === "kalender");
-    document.body.classList.toggle("route-heute",    state.route === "heute");
-    return;
-  }
+if (!view || __routeAnimating){
+  state.route = nextRoute;
+  render();
+  highlightNav();
+  document.body.classList.toggle("route-kalender", state.route === "kalender");
+  document.body.classList.toggle("route-heute",    state.route === "heute");
+  document.body.classList.toggle("route-einstellungen", state.route === "einstellungen"); 
+  return;
+}
+
 
   __routeAnimating = true;
 
