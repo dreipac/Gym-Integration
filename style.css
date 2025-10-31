@@ -2126,58 +2126,65 @@ body.route-kalender .section label{
   .nav-link.menu-btn{ display: none !important; }
 }
 
-/* ==== Drawer (rechts) ==== */
-.drawer[aria-hidden="true"] { pointer-events: none; }
-.drawer{
-  position: fixed; inset: 0; z-index: 60;
-  display: grid;
-  grid-template-columns: 1fr auto;
+/* === Mobile: Einstellungen-Tab ausblenden, Menü-Tab einblenden === */
+@media (max-width: 768px){
+  .nav-link.nav-settings{ display: none !important; }
+  .nav-link.nav-menu{ display: flex !important; }
 }
-.drawer-backdrop{
-  background: rgba(0,0,0,.45);
-  opacity: 0; transition: opacity .20s ease;
-}
-.drawer-panel{
-  width: min(92vw, 480px);
-  height: 100%;
-  background: #0f1621;               /* passt zum Theme */
-  color: var(--txt);
-  border-left: 1px solid rgba(255,255,255,.08);
-  box-shadow: 0 20px 60px rgba(0,0,0,.45);
-  transform: translateX(100%);
-  transition: transform .22s cubic-bezier(.22,.9,.26,1);
-  position: relative;
-  padding: 18px;
-}
-.drawer.open .drawer-backdrop{ opacity: 1; }
-.drawer.open .drawer-panel{ transform: translateX(0); }
-.drawer:not(.open){ pointer-events: none; }
-
-/* Close-Button */
-.drawer-close{
-  position: absolute; top: 10px; right: 12px;
-  background: transparent; border: none; color: var(--txt);
-  font-size: 28px; line-height: 1; cursor: pointer;
+@media (min-width: 769px){
+  .nav-link.nav-menu{ display: none !important; }
 }
 
-/* Drawer-Navigation */
-.drawer-nav{
-  display: grid; gap: 10px; margin-top: 28px;
-}
-.drawer-link{
-  display: block;
-  width: 100%;
-  text-align: left;
-  background: #111a27;
-  color: var(--txt);
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 12px;
-  padding: 12px 14px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.drawer-link.logout{
-  background: #ef4444;
-  border-color: #ef4444;
-  color: #0b0b0b;
+/* === Einstellungen: mobil vollflächig, ohne Bottom-Navi === */
+@media (max-width: 768px){
+  /* route-Klasse sorgt fürs gezielte Ausblenden */
+  body.route-einstellungen .topbar{ display: none !important; }
+  body.route-einstellungen .footer{ display: none !important; }
+
+  body.route-einstellungen .view{
+    padding: 0 !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    overflow: auto !important;
+  }
+
+  /* Sektion füllt Fläche; Karten bekommen Standard-Padding */
+  .settings-fullscreen{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 12px 16px 20px;
+    display: grid;
+    gap: 12px;
+  }
+
+  /* Obere Werkzeugleiste (Zurück) */
+  .fs-header{
+    position: sticky; top: 0; z-index: 5;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 4px;
+    background: rgba(0,0,0,.35);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    backdrop-filter: blur(10px);
+    border-radius: 0;
+  }
+  .fs-back{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--txt);
+    font-weight: 700;
+    padding: 6px 8px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.18);
+  }
+  .fs-back svg{ width: 22px; height: 22px; display:block; }
+  .fs-title{
+    margin: 0; font-size: 1.2rem; font-weight: 800; text-align: center;
+  }
+  .fs-spacer{ width: 36px; height: 1px; opacity: 0; } /* Balance rechts */
 }
