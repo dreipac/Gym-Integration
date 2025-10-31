@@ -293,64 +293,50 @@
   </template>
 
   <!-- EINSTELLUNGEN (vollflächig mobil, mit Zurück-Pfeil) -->
-  <template id="tpl-settings">
-    <section class="section settings-fullscreen">
-      <!-- FS-Header nur mobil sichtbar -->
-      <div class="fs-header" role="toolbar" aria-label="Einstellungen Navigation">
-        <a class="fs-back" href="#/menu" aria-label="Zurück zum Menü">
-          <!-- Heroicons chevron-left -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M15.78 4.72a.75.75 0 0 1 0 1.06L9.56 12l6.22 6.22a.75.75 0 1 1-1.06 1.06l-6.75-6.75a.75.75 0 0 1 0-1.06l6.75-6.75a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
-          </svg>
-          <span>Zurück</span>
-        </a>
-        <h1 class="fs-title">Einstellungen</h1>
-        <span class="fs-spacer" aria-hidden="true"></span>
-      </div>
+<template id="tpl-settings">
+  <div class="settings-fullscreen">
 
-      <div class="glass card card--big">
-        <p class="muted">Daten sichern, wiederherstellen und zurücksetzen.</p>
+    <!-- Kopfzeile -->
+    <div class="fs-header">
+      <a href="#/heute" class="fs-back" aria-label="Zurück">
+        <!-- simple chevron -->
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path d="M15 19l-7-7 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Zurück</span> 
+      </a>
+      <h2 class="fs-title">Einstellungen</h2> <!-- wird im CSS verborgen -->
+      <div class="fs-spacer"></div>
+    </div>
 
-        <div class="settings-block">
-          <h3>Darstellung</h3>
-          <label class="field" style="display:flex;align-items:center;gap:10px">
-            <input id="black-mode" type="checkbox" />
-            <span>Black Mode (mobil)</span>
-          </label>
-        </div>
+    <!-- Darstellung / Black Mode -->
+    <div class="settings-block">
+      <!-- Label-Text links änderbar, Toggle bleibt #black-mode -->
+      <label for="black-mode" class="btn settings-row">
+        <span>Dark Mode</span>
+        <input id="black-mode" type="checkbox" />
+      </label>
+    </div>
 
-        <div class="settings-grid">
-          <div class="settings-block">
-            <h3>Export</h3>
-            <p>Speichere alle Daten als JSON-Datei.</p>
-            <button class="btn primary" id="btn-export">Exportieren</button>
-          </div>
+    <!-- Zurücksetzen -->
+    <div class="settings-block">
+      <button id="btn-reset" class="btn settings-row">
+        <span>Alles Daten zurücksetzen</span> 
+      </button>
+    </div>
 
-          <div class="settings-block">
-            <h3>Import</h3>
-            <p>JSON-Datei laden und Daten überschreiben.</p>
-            <input type="file" id="file-import" accept="application/json" />
-          </div>
+    <!-- Abmelden -->
+    <div class="settings-block">
+      <button id="btn-logout" class="btn settings-row">
+        <span>Abmelden</span> 
+      </button>
+    </div>
 
-          <div class="settings-block danger-block">
-            <h3>Zurücksetzen</h3>
-            <p>Alle lokalen Daten löschen (Pläne, Erledigt, Vorlagen).</p>
-            <button class="btn danger ghost" id="btn-reset">Alles löschen</button>
-          </div>
-        </div>
+    <!-- Optionaler "Zurück"-Link unten (kannst du auch entfernen) -->
+    <a href="#/heute" class="btn subtle">Zurück</a> 
 
-        <div class="settings-block">
-          <h3>Abmelden</h3>
-          <p>Beendet die aktuelle Sitzung.</p>
-          <button class="btn subtle" id="btn-logout">Abmelden</button>
-        </div>
-
-        <a class="btn subtle" href="#/menu">Zurück</a>
-      </div>
-    </section>
-  </template>
-
-
+  </div>
+</template>
 
 <!-- KONFIGURIEREN -->
 <template id="tpl-konfig">
