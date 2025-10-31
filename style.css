@@ -2135,137 +2135,122 @@ body.route-kalender .section label{
   .nav-link.nav-menu{ display: none !important; }
 }
 
-/* ================================
-   iOS/TikTok-Stil für Einstellungen
-   ================================ */
+/* === Einstellungen (mobil): flache Liste mit Header === */
 @media (max-width: 768px){
-  /* Top/Bottom-Bar in den Einstellungen ausblenden */
-  body.route-einstellungen .topbar{ display: none !important; }
-  body.route-einstellungen .footer{ display: none !important; }
+  body.route-einstellungen .topbar{ display:none !important; }
+  body.route-einstellungen .footer{ display:none !important; }
 
-  /* Seite darf nur vertikal scrollen */
-  body.route-einstellungen{
+  /* Nur vertikales Scrollen */
+  body.route-einstellungen {
     overflow-x: hidden !important;
   }
-
-  /* View füllt die Seite, nur vertikal scrollbar */
-  body.route-einstellungen .view{
-    padding: 0 !important;
+  body.route-einstellungen .view {
     height: 100dvh !important;
-    min-height: 100dvh !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
-    overscroll-behavior-x: none;
-    overscroll-behavior-y: contain;
   }
 
-  /* Container für Einstellungen – Flat Layout */
-  body.route-einstellungen .settings-fullscreen {
-    background: #000;
-    color: #fff;
+  /* Fullscreen-Layout beibehalten */
+  .settings-fullscreen{
     display: flex;
     flex-direction: column;
+    min-height: 100%;
     padding: 0;
-    gap: 0;
+    background: #000;
+    color: #fff;
   }
 
-  /* Alle alten Karten entfernen */
-  body.route-einstellungen .glass.card.card--big,
-  body.route-einstellungen .settings-grid,
-  body.route-einstellungen .settings-block {
-    background: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  /* Überschriften & Beschreibungen ausblenden */
-  body.route-einstellungen .settings-block h3,
-  body.route-einstellungen .settings-block p,
-  body.route-einstellungen .muted,
-  body.route-einstellungen .fs-title {
-    display: none !important;
-  }
-
-  /* Jeder Eintrag = Button-Zeile */
-  body.route-einstellungen .settings-block button,
-  body.route-einstellungen .settings-block input[type="file"],
-  body.route-einstellungen .settings-block label,
-  body.route-einstellungen .settings-block .btn {
-    width: 100%;
-    background: transparent !important;
-    border: none !important;
-    color: #fff !important;
-    font-size: 1.05rem;
-    font-weight: 500;
-    text-align: left;
-    padding: 16px 18px;
-    display: block;
-    border-bottom: 1px solid rgba(255,255,255,.1);
-  }
-
-  /* Checkbox im TikTok-Stil */
-  body.route-einstellungen input[type="checkbox"] {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    border: 1px solid rgba(255,255,255,.4);
-    margin-right: 10px;
-    vertical-align: middle;
-  }
-  body.route-einstellungen input[type="checkbox"]:checked {
-    background-color: #22d3ee;
-    border-color: #22d3ee;
-  }
-
-  /* Klickfeedback */
-  body.route-einstellungen .settings-block button:active,
-  body.route-einstellungen .settings-block .btn:active,
-  body.route-einstellungen .settings-block label:active {
-    background: rgba(255,255,255,.05) !important;
-  }
-
-  /* Letzter Eintrag ohne Linie */
-  body.route-einstellungen .settings-block:last-child button {
-    border-bottom: none;
-  }
-
-  /* "Zurück"-Button unten */
-  body.route-einstellungen a.btn.subtle {
-    border: none !important;
-    color: #22d3ee !important;
-    font-weight: 600;
-    text-align: center;
-    padding: 18px;
-  }
-
-  /* Sticky Header beibehalten */
+  /* Header wie vorher */
   .fs-header{
-    position: sticky; top: 0; z-index: 5;
+    position: sticky;
+    top: 0;
+    z-index: 5;
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
     gap: 8px;
-    padding: 10px 4px;
+    padding: 12px 14px;
     background: #000;
-    border-bottom: 1px solid rgba(255,255,255,.1);
+    border-bottom: 1px solid rgba(255,255,255,.08);
   }
   .fs-back{
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    text-decoration: none;
     color: #fff;
+    text-decoration: none;
     font-weight: 700;
-    padding: 6px 8px;
-    border-radius: 10px;
   }
-  .fs-back svg{ width: 22px; height: 22px; display:block; }
+  .fs-title{
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-align: center;
+    margin: 0;
+  }
+  .fs-spacer{ width: 24px; height: 1px; }
+
+  /* Blöcke als Liste */
+  .settings-grid,
+  .settings-block{
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Zeilen-Design */
+  .settings-block button,
+  .settings-block label,
+  .settings-block .btn,
+  .settings-block input[type="file"] {
+    width: 100%;
+    background: #111 !important;
+    color: #fff !important;
+    border: none !important;
+    text-align: left;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 16px 18px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Toggle-Checkbox */
+  .settings-block input[type="checkbox"] {
+    accent-color: #22d3ee;
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Klickfeedback */
+  .settings-block button:active,
+  .settings-block label:active {
+    background: rgba(255,255,255,.06) !important;
+  }
+
+  /* letzte Zeile ohne Rand */
+  .settings-block:last-of-type button,
+  .settings-block:last-of-type label {
+    border-bottom: none;
+  }
+
+  /* "Zurück"-Button unten */
+  a.btn.subtle{
+    border:none !important;
+    background:transparent !important;
+    color:#22d3ee !important;
+    text-align:center;
+    font-weight:600;
+    padding:18px;
+  }
 }
+
+
 
 
 
